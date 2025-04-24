@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
+import { BASE_URL } from './lib/urls'
 
 const nextConfig: NextConfig = {
-  /* config options here */
-};
+	images: {
+		remotePatterns: [new URL(`${BASE_URL}/**`)],
+	},
+}
 
-export default nextConfig;
+export default nextConfig
