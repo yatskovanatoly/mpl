@@ -13,12 +13,12 @@ const Games: FC<{ games: Game[] }> = ({ games }) => {
 }
 
 const ResultItem = (result: Game) => {
-	const { score, home, away } = result
+	const { score, home, away, time } = result
 
 	return (
 		<div key={result.home.team} className='grid grid-cols-3 w-full'>
 			<Team {...home} side='home' />
-			<Score score={score} />
+			{score ? <Score score={score ?? time} /> : <Time time={time} />}
 			<Team {...away} side='away' />
 		</div>
 	)
@@ -67,6 +67,15 @@ const Score: FC<{ score: string }> = ({ score }) => {
 					{scoreSplit[3]}
 				</div>
 			)}
+		</div>
+	)
+}
+
+const Time: FC<{ time: string | undefined }> = ({ time }) => {
+	return (
+		<div className={`items-center flex justify-center gap-2`}>
+			<div className=''>🕘</div>
+			<div className='text-2xl font-bold muted'>{time}</div>
 		</div>
 	)
 }

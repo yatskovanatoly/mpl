@@ -8,7 +8,7 @@ export type Game = {
 	home: Team
 	away: Team
 	score: string
-  date: Date
+  time?: string
 }
 
 export type Rounds = {

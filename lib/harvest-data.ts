@@ -21,7 +21,8 @@ const getData = async (round?: number) => {
 		$('.result').each((i, el) => {
 			const resultChildren = $(el).children()
 			const rowChildren = resultChildren.children()
-			const result: Partial<Game> = {}
+			const time = $(el).parent().find('.date').text()
+			const game: Partial<Game> = {}
 
 			rowChildren.each((_, child) => {
 				const $child = $(child)
@@ -32,16 +33,17 @@ const getData = async (round?: number) => {
 				if (className === 'home' || className === 'away') {
 					const id = $child.find('a').attr()!.href.split('/').at(-1)!
 
-					result[className] = {
+					game[className] = {
 						id,
 						team: $child.text().trim(),
 						logo: imgUrl,
 					}
 				} else if (className === 'score') {
-					result.score = $child.text().trim()
+					game.score = $child.text().trim()
 				}
+				game.time = !game.score ? time : undefined
 			})
-			games.push(result as Game)
+			games.push(game as Game)
 		})
 	} catch (e) {
 		console.error(e)
