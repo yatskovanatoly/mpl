@@ -58,7 +58,9 @@ const Score: FC<{ score: string }> = ({ score }) => {
   const scoreSplit = sanitized.split(" ")
 
   return (
-    <div className={`grid grid-cols-3 items-center justify-self-center`}>
+    <div
+      className={`grid w-12 grid-cols-3 items-center justify-center justify-self-center sm:w-16`}
+    >
       {scoreSplit.slice(0, 3).map((item, i) => (
         <div className="text-center" key={i}>
           {item}
