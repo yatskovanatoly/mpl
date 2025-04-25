@@ -1,7 +1,8 @@
+import ThemeToggle from "@/components/ThemeToggle"
 import type { Metadata } from "next"
+import { ThemeProvider } from "next-themes"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
-import ThemeToggle from "@/components/ThemeToggle"
 
 export default function RootLayout({
   children,
@@ -12,13 +13,16 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        suppressHydrationWarning
       >
-        <div className="flex min-h-dvh flex-col items-center justify-center p-8 font-[family-name:var(--font-geist-sans)]">
-          <div className="fixed top-2 right-4">
-            <ThemeToggle />
+        <ThemeProvider attribute="class" enableSystem defaultTheme="system">
+          <div className="flex min-h-dvh flex-col items-center justify-center p-8 font-[family-name:var(--font-geist-sans)]">
+            <div className="fixed top-2 right-4">
+              <ThemeToggle />
+            </div>
+            {children}
           </div>
-          {children}
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   )
