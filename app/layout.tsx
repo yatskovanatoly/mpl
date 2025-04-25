@@ -15,7 +15,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh flex-col items-center justify-center p-8 font-[family-name:var(--font-geist-sans)]">
+          <div className="flex min-h-dvh flex-col items-center justify-center p-6 font-[family-name:var(--font-geist-sans)]">
             <div className="fixed top-2 right-4">
               <ThemeToggle />
             </div>

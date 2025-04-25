@@ -8,7 +8,7 @@ import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
   return (
-    <div className="flex w-[500px] flex-col gap-4">{games.map(ResultItem)}</div>
+    <div className="flex max-w-2xl flex-col gap-4">{games.map(ResultItem)}</div>
   )
 }
 
@@ -27,7 +27,7 @@ const ResultItem = (result: Game) => {
 const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
   return (
     <div
-      className={`flex w-full items-center justify-between gap-4 ${
+      className={`flex w-full items-center justify-between gap-4 max-sm:text-xs ${
         side === "home"
           ? "justify-self-start"
           : "flex-row-reverse justify-self-end text-right"
@@ -44,18 +44,20 @@ const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
   const src = logosMap[id] ?? logoUrl
 
   if (!src) return null
-  return <Image height={50} width={50} alt={"logo"} src={src} />
+  return (
+    <div className="shrink-0 max-sm:size-8">
+      <Image height={50} width={50} alt={"logo"} src={src} />
+    </div>
+  )
 }
 
 const Score: FC<{ score: string }> = ({ score }) => {
-  if (!score) return <div className="grow" />
-
   const sanitized = score.replace(/\s+/g, " ").trim()
   const scoreSplit = sanitized.split(" ")
 
   return (
     <div
-      className={`m-auto grid w-16 grid-cols-3 items-center justify-self-center text-2xl font-bold`}
+      className={`grid grid-cols-3 items-center justify-self-center text-xl font-bold transition-[font-size] sm:w-16 sm:text-2xl`}
     >
       {scoreSplit.slice(0, 3).map((item, i) => (
         <div className="text-center" key={i}>
@@ -70,12 +72,13 @@ const Score: FC<{ score: string }> = ({ score }) => {
     </div>
   )
 }
+
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
     <div
       className={`flex w-24 items-center justify-between gap-2 justify-self-center text-nowrap`}
     >
-      <div className="">🕘</div>
+      <div>🕘</div>
       <div className="muted text-2xl font-bold">{time}</div>
     </div>
   )
