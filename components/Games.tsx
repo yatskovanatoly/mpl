@@ -16,9 +16,11 @@ const ResultItem = (result: Game) => {
   const { score, home, away, time } = result
 
   return (
-    <div key={result.home.team} className="grid w-full grid-cols-3">
+    <div key={result.home.team} className="grid grid-cols-3">
       <Team {...home} side="home" />
-      {score ? <Score score={score ?? time} /> : <Time time={time} />}
+      <div className="text-md self-center font-bold transition-[font-size] sm:text-2xl">
+        {score ? <Score score={score ?? time} /> : <Time time={time} />}
+      </div>
       <Team {...away} side="away" />
     </div>
   )
@@ -45,8 +47,8 @@ const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
 
   if (!src) return null
   return (
-    <div className="shrink-0 max-sm:size-8">
-      <Image height={50} width={50} alt={"logo"} src={src} />
+    <div className="size-12 shrink-0 transition-all duration-300 max-sm:size-6">
+      <Image height={48} width={48} alt={"logo"} src={src} />
     </div>
   )
 }
@@ -56,9 +58,7 @@ const Score: FC<{ score: string }> = ({ score }) => {
   const scoreSplit = sanitized.split(" ")
 
   return (
-    <div
-      className={`grid grid-cols-3 items-center justify-self-center text-xl font-bold transition-[font-size] sm:w-16 sm:text-2xl`}
-    >
+    <div className={`grid grid-cols-3 items-center justify-self-center`}>
       {scoreSplit.slice(0, 3).map((item, i) => (
         <div className="text-center" key={i}>
           {item}
@@ -76,10 +76,10 @@ const Score: FC<{ score: string }> = ({ score }) => {
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
     <div
-      className={`flex w-24 items-center justify-between gap-2 justify-self-center text-nowrap`}
+      className={`flex w-16 items-center justify-between gap-2 justify-self-center text-nowrap sm:w-24`}
     >
       <div>🕘</div>
-      <div className="muted text-2xl font-bold">{time}</div>
+      <div className="muted">{time}</div>
     </div>
   )
 }
