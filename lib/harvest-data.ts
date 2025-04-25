@@ -1,6 +1,6 @@
 import axios from 'axios'
 import * as cheerio from 'cheerio'
-import { Result, Rounds } from './types'
+import { Game, Rounds } from './types'
 import { MPL_ID, MYCHAMP_URL } from './urls'
 
 const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
@@ -14,38 +14,39 @@ const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
 }
 
 const getData = async (round?: number) => {
-	const results: Result[] = []
+	const games: Game[] = []
 	const $ = await getCheerio(round)
 
 	try {
 		$('.result').each((i, el) => {
 			const resultChildren = $(el).children()
 			const rowChildren = resultChildren.children()
-			const result: Partial<Result> = {}
+			const result: Partial<Game> = {}
 
 			rowChildren.each((_, child) => {
 				const $child = $(child)
 				const img = $child.find('img')
-				const imgUrl = img.attr()?.src.replace('mini', 'original').substring(1)
-				const clubId = imgUrl?.match(/\d+/)?.[0]
+				const imgUrl = img.attr()?.src.replace('mini', 'large').substring(1)
 				const className = $child.attr('class')?.split(' ').at(-1)
 
 				if (className === 'home' || className === 'away') {
+					const id = $child.find('a').attr()!.href.split('/').at(-1)!
+
 					result[className] = {
+						id,
 						team: $child.text().trim(),
 						logo: imgUrl,
-						id: clubId,
 					}
 				} else if (className === 'score') {
 					result.score = $child.text().trim()
 				}
 			})
-			results.push(result as Result)
+			games.push(result as Game)
 		})
 	} catch (e) {
 		console.error(e)
 	}
-	return results
+	return games
 }
 
 export const getRounds = async (round?: number): Promise<Rounds> => {

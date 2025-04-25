@@ -1,4 +1,4 @@
-import GamesPage from '@/components/GamesPage'
+import GamesPage from '@/components/Round'
 
 export default function Page({ params }: { params: { round: string } }) {
 	const round = Number(params.round)

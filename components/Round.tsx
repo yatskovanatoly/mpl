@@ -1,10 +1,10 @@
-import Results from '@/components/Results'
+import Games from '@/components/Games'
 import RoundSelect from '@/components/RoundSelect'
 import getData, { getRounds } from '@/lib/harvest-data'
-import { Result } from '@/lib/types'
+import { Game } from '@/lib/types'
 
 export default async function GamesPage({ round }: { round?: number }) {
-	const data: Result[] = await getData(round)
+	const data: Game[] = await getData(round)
 	const { rounds, currentRound } = await getRounds(round)
 
 	return (
@@ -12,7 +12,7 @@ export default async function GamesPage({ round }: { round?: number }) {
 			<div>
 				Раунд: <RoundSelect rounds={rounds} currentRound={currentRound} />
 			</div>
-			<Results results={data} />
+			<Games games={data} />
 		</div>
 	)
 }

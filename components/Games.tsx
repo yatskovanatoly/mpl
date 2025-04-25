@@ -1,20 +1,18 @@
 'use client'
 
 import { logosMap } from '@/lib/logos-by-id'
-import { Result, Team as TeamType } from '@/lib/types'
+import { Game, Team as TeamType } from '@/lib/types'
 import { BASE_URL } from '@/lib/urls'
 import Image from 'next/image'
-import { FC, useState } from 'react'
+import { FC } from 'react'
 
-const Results: FC<{ results: Result[] }> = ({ results }) => {
+const Games: FC<{ games: Game[] }> = ({ games }) => {
 	return (
-		<div className='w-[500px] flex flex-col gap-4'>
-			{results.map(ResultItem)}
-		</div>
+		<div className='w-[500px] flex flex-col gap-4'>{games.map(ResultItem)}</div>
 	)
 }
 
-const ResultItem = (result: Result) => {
+const ResultItem = (result: Game) => {
 	const { score, home, away } = result
 
 	return (
@@ -41,21 +39,12 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
 	)
 }
 
-const Logo: FC<{ logo: string | undefined; id?: string }> = ({ logo, id }) => {
-	const url = id ? logosMap[id] : `${BASE_URL}/${logo}`
-	const [logoUrl, setLogoUrl] = useState(url)
+const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
+	const logoUrl = `${BASE_URL}/${logo}`
+	const src = logosMap[id] ?? logoUrl
 
-	if (!logo) return null
-	return (
-		<Image
-			height={50}
-			width={50}
-			alt={'logo'}
-			src={logoUrl}
-			className=''
-			onError={() => setLogoUrl(logoUrl.replace('original', 'large'))}
-		/>
-	)
+	if (!src) return null
+	return <Image height={50} width={50} alt={'logo'} src={src} />
 }
 
 const Score: FC<{ score: string }> = ({ score }) => {
@@ -82,4 +71,4 @@ const Score: FC<{ score: string }> = ({ score }) => {
 	)
 }
 
-export default Results
+export default Games

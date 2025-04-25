@@ -1,13 +1,14 @@
 export type Team = {
-	id?: string
+	id: string
 	team: string
 	logo?: string
 }
 
-export type Result = {
+export type Game = {
 	home: Team
 	away: Team
 	score: string
+  date: Date
 }
 
 export type Rounds = {
