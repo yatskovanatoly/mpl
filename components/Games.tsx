@@ -29,7 +29,7 @@ const ResultItem = (result: Game) => {
 const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
   return (
     <div
-      className={`flex w-full items-center justify-between gap-4 max-sm:text-xs ${
+      className={`flex w-full items-center justify-between gap-2 max-sm:text-xs sm:gap-4 ${
         side === "home"
           ? "justify-self-start"
           : "flex-row-reverse justify-self-end text-right"
