@@ -59,6 +59,8 @@ const Logo: FC<{ logo: string | undefined; id?: string }> = ({ logo, id }) => {
 }
 
 const Score: FC<{ score: string }> = ({ score }) => {
+	if (!score) return <div className='grow' />
+
 	const sanitized = score.replace(/\s+/g, ' ').trim()
 	const scoreSplit = sanitized.split(' ')
 
