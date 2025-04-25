@@ -19,12 +19,11 @@ const getData = async (round?: number) => {
 
 	try {
 		$('.result').each((i, el) => {
-			const resultChildren = $(el).children()
-			const rowChildren = resultChildren.children()
+			const row = $(el).find('.row').children()
 			const time = $(el).parent().find('.date').text()
 			const game: Partial<Game> = {}
 
-			rowChildren.each((_, child) => {
+			row.each((_, child) => {
 				const $child = $(child)
 				const img = $child.find('img')
 				const imgUrl = img.attr()?.src.replace('mini', 'large').substring(1)
