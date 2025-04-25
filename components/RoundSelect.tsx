@@ -14,7 +14,6 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
 		const index = event.target.selectedIndex
 
 		if (!Number(value)) {
-			console.log(index, Number(rounds.at(-2)), Number(rounds.at(1)))
 			router.push(
 				`/games/${
 					index > 0 ? Number(rounds.at(-2)) + 1 : Number(rounds.at(1)) - 1
