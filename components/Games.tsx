@@ -58,14 +58,14 @@ const Score: FC<{ score: string }> = ({ score }) => {
   const scoreSplit = sanitized.split(" ")
 
   return (
-    <div
-      className={`grid w-12 grid-cols-3 items-center justify-center justify-self-center sm:w-16`}
-    >
-      {scoreSplit.slice(0, 3).map((item, i) => (
-        <div className="text-center" key={i}>
-          {item}
-        </div>
-      ))}
+    <div className="flex flex-col">
+      <div className={`flex w-full justify-center gap-2`}>
+        {scoreSplit.slice(0, 3).map((item, i) => (
+          <div className="text-center" key={i}>
+            {item}
+          </div>
+        ))}
+      </div>
       {scoreSplit.length > 3 && (
         <div className="col-span-3 text-center text-sm opacity-30">
           {scoreSplit[3]}
@@ -77,9 +77,7 @@ const Score: FC<{ score: string }> = ({ score }) => {
 
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
-    <div
-      className={`flex w-16 items-center justify-between gap-2 justify-self-center text-nowrap sm:w-24`}
-    >
+    <div className={`flex w-full justify-center gap-2`}>
       <div>🕘</div>
       <div className="muted">{time}</div>
     </div>
