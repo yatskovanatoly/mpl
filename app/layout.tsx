@@ -10,10 +10,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
           <div className="flex min-h-dvh flex-col items-center justify-center p-8 font-[family-name:var(--font-geist-sans)]">

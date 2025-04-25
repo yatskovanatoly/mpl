@@ -5,7 +5,6 @@ import { useTheme } from "next-themes"
 export default function ThemeToggle() {
   const { theme, setTheme } = useTheme()
 
-  if (!theme) return null
   return (
     <button
       className="scale-150"
