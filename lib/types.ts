@@ -1,21 +1,21 @@
 export type Team = {
-	id: string
-	team: string
-	logo?: string
+  id: string
+  team: string
+  logo?: string
 }
 
 export type Game = {
-	home: Team
-	away: Team
-	score: string
+  home: Team
+  away: Team
+  score: string
   time?: string
 }
 
 export type Rounds = {
-	rounds: string[]
-	currentRound: string | undefined
+  rounds: string[]
+  currentRound: string | undefined
 }
 
 export type ParamsWithRound = {
-	params: Promise<{ round: string }>
+  params: Promise<{ round: string }>
 }

@@ -1,5 +1,5 @@
-import GamesPage from '@/components/Round'
+import GamesPage from "@/components/Round"
 
 export default function Page() {
-	return <GamesPage />
+  return <GamesPage />
 }

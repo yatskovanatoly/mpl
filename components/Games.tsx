@@ -1,19 +1,19 @@
-"use client";
+"use client"
 
-import { logosMap } from "@/lib/logos-by-id";
-import { Game, Team as TeamType } from "@/lib/types";
-import { BASE_URL } from "@/lib/urls";
-import Image from "next/image";
-import { FC } from "react";
+import { logosMap } from "@/lib/logos-by-id"
+import { Game, Team as TeamType } from "@/lib/types"
+import { BASE_URL } from "@/lib/urls"
+import Image from "next/image"
+import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
   return (
     <div className="flex w-[500px] flex-col gap-4">{games.map(ResultItem)}</div>
-  );
-};
+  )
+}
 
 const ResultItem = (result: Game) => {
-  const { score, home, away, time } = result;
+  const { score, home, away, time } = result
 
   return (
     <div key={result.home.team} className="grid w-full grid-cols-3">
@@ -21,8 +21,8 @@ const ResultItem = (result: Game) => {
       {score ? <Score score={score ?? time} /> : <Time time={time} />}
       <Team {...away} side="away" />
     </div>
-  );
-};
+  )
+}
 
 const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
   return (
@@ -36,22 +36,22 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
       {team}
       <Logo logo={logo} id={id} />
     </div>
-  );
-};
+  )
+}
 
 const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
-  const logoUrl = `${BASE_URL}/${logo}`;
-  const src = logosMap[id] ?? logoUrl;
+  const logoUrl = `${BASE_URL}/${logo}`
+  const src = logosMap[id] ?? logoUrl
 
-  if (!src) return null;
-  return <Image height={50} width={50} alt={"logo"} src={src} />;
-};
+  if (!src) return null
+  return <Image height={50} width={50} alt={"logo"} src={src} />
+}
 
 const Score: FC<{ score: string }> = ({ score }) => {
-  if (!score) return <div className="grow" />;
+  if (!score) return <div className="grow" />
 
-  const sanitized = score.replace(/\s+/g, " ").trim();
-  const scoreSplit = sanitized.split(" ");
+  const sanitized = score.replace(/\s+/g, " ").trim()
+  const scoreSplit = sanitized.split(" ")
 
   return (
     <div
@@ -68,8 +68,8 @@ const Score: FC<{ score: string }> = ({ score }) => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
     <div
@@ -78,7 +78,7 @@ const Time: FC<{ time: string | undefined }> = ({ time }) => {
       <div className="">🕘</div>
       <div className="muted text-2xl font-bold">{time}</div>
     </div>
-  );
-};
+  )
+}
 
-export default Games;
+export default Games

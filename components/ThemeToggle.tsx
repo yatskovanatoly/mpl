@@ -1,12 +1,12 @@
-'use client'
-import { useTheme } from '@/hooks/useTheme'
+"use client"
+import { useTheme } from "@/hooks/useTheme"
 
 export default function ThemeToggle() {
-	const { theme, toggleTheme } = useTheme()
+  const { theme, toggleTheme } = useTheme()
 
-	return (
-		<button className='scale-150' onClick={toggleTheme}>
-			{theme === 'dark' ? '🌞' : '🌙'}
-		</button>
-	)
+  return (
+    <button className="scale-150" onClick={toggleTheme}>
+      {theme === "dark" ? "🌞" : "🌙"}
+    </button>
+  )
 }
