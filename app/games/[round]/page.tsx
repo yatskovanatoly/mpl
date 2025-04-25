@@ -5,7 +5,7 @@ export default async function Page({
 }: {
   params: Promise<{ round: string }>
 }) {
-  const round = await params
+  const { round } = await params
   const roundNum = Number(round)
 
   return <GamesPage round={roundNum} />
