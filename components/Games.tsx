@@ -31,7 +31,7 @@ const ResultItem = (result: Game) => {
 const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
   return (
     <div
-      className={`flex w-full items-center justify-between gap-4 max-sm:text-xs sm:gap-6 ${
+      className={`flex w-full items-center justify-between gap-4 font-medium max-sm:text-xs sm:gap-6 ${
         side === "home"
           ? "justify-self-start"
           : "flex-row-reverse justify-self-end text-right"
@@ -80,7 +80,7 @@ const Score: FC<{ score: string }> = ({ score }) => {
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
     <div
-      className={`flex w-full items-center justify-center gap-1 text-xs font-thin sm:text-sm`}
+      className={`flex w-full items-center justify-center gap-1 text-xs sm:text-sm`}
     >
       <div>🕘</div>
       <div className="muted">{time}</div>

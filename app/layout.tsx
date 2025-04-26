@@ -1,7 +1,7 @@
 import ThemeToggle from "@/components/ThemeToggle"
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
-import { Fira_Sans } from "next/font/google"
+import { Roboto } from "next/font/google"
 import "./globals.css"
 
 export default function RootLayout({
@@ -11,9 +11,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${fira.variable} antialiased`}>
+      <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="font-fira-sans flex min-h-dvh flex-col items-center justify-center p-6 font-bold">
+          <div className="flex min-h-dvh flex-col items-center justify-center p-6">
             <div className="fixed top-4 right-6">
               <ThemeToggle />
             </div>
@@ -25,10 +25,8 @@ export default function RootLayout({
   )
 }
 
-const fira = Fira_Sans({
+const roboto = Roboto({
   subsets: ["cyrillic"],
-  variable: "--font-fira-sans",
-  weight: "400",
 })
 
 export const metadata: Metadata = {
