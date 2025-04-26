@@ -9,9 +9,7 @@ export default async function GamesPage({ round }: { round?: number }) {
 
   return (
     <div className="flex flex-col items-center gap-4">
-      <div>
-        Раунд: <RoundSelect rounds={rounds} currentRound={currentRound} />
-      </div>
+      <RoundSelect rounds={rounds} currentRound={currentRound} />
       <Games games={data} />
     </div>
   )
