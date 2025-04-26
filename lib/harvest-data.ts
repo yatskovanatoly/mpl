@@ -20,7 +20,7 @@ const getData = async (round?: number) => {
   try {
     $(".result").each((i, el) => {
       const row = $(el).find(".row").children()
-      const time = $(el).parent().find(".date").text()
+      const time = $(el).parent().find(".date").text().trim()
       const game: Partial<Game> = {}
 
       row.each((_, child) => {
