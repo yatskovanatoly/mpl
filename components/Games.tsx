@@ -83,7 +83,7 @@ const Score: FC<{ score: string }> = ({ score }) => {
 const Time: FC<{ time: string | undefined }> = ({ time }) => {
   return (
     <div
-      className={`flex w-full items-center justify-center gap-1 text-xs sm:text-sm`}
+      className={`flex w-full items-center justify-center gap-1 text-xs sm:text-base`}
     >
       <div className="muted">{time}</div>
     </div>
