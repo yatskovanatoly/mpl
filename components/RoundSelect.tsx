@@ -28,7 +28,7 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
     <div
       onClick={() => handleClick(ref)}
       aria-disabled={loading}
-      className={`${loading && "muted pointer-events-none"} flex cursor-default items-center gap-1 max-sm:border-b`}
+      className={`${loading && "muted pointer-events-none"} text-sm flex cursor-default items-center gap-1 max-sm:border-b`}
     >
       <div>Тур:</div>
       <select ref={ref} defaultValue={initialRound} onChange={handleChange}>
