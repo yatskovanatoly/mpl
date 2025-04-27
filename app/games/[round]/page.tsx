@@ -1,12 +1,10 @@
-import GamesPage from "@/components/Round"
+import RoundWithData from "../RoundWithData"
 
-export default async function Page({
-  params,
-}: {
-  params: Promise<{ round: string }>
-}) {
+const Page = async ({ params }: { params: Promise<{ round: string }> }) => {
   const { round } = await params
   const roundNum = Number(round)
 
-  return <GamesPage round={roundNum} />
+  return <RoundWithData round={roundNum} />
 }
+
+export default Page

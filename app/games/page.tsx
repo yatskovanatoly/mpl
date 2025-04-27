@@ -1,5 +1,5 @@
-import GamesPage from "@/components/Round"
+import RoundWithData from "./RoundWithData"
 
-export default function Page() {
-  return <GamesPage />
-}
+const Page = () => <RoundWithData />
+
+export default Page

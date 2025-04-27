@@ -1,13 +1,14 @@
 "use client"
 
+import RoundContext from "@/lib/round-context"
 import { Rounds } from "@/lib/types"
 import { useParams, useRouter } from "next/navigation"
-import { ChangeEvent, FC, RefObject, useRef, useState } from "react"
+import { ChangeEvent, FC, RefObject, useContext, useRef } from "react"
 
 const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
   const params = useParams<{ round: string }>()
   const initialRound = params.round ?? currentRound
-  const [loading, setLoading] = useState(false)
+  const { setLoading } = useContext(RoundContext)
   const router = useRouter()
   const ref = useRef<HTMLSelectElement>(null)
 
@@ -27,8 +28,7 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
   return (
     <div
       onClick={() => handleClick(ref)}
-      aria-disabled={loading}
-      className={`${loading && "muted pointer-events-none"} text-sm flex cursor-default items-center gap-1 max-sm:border-b`}
+      className={`flex cursor-default items-center gap-1 text-sm max-sm:border-b`}
     >
       <div>Тур:</div>
       <select ref={ref} defaultValue={initialRound} onChange={handleChange}>

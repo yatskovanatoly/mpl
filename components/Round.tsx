@@ -1,18 +1,35 @@
+"use client"
+
 import Games from "@/components/Games"
 import RoundSelect from "@/components/RoundSelect"
-import getData, { getRounds } from "@/lib/harvest-data"
+import RoundContext from "@/lib/round-context"
+import { RoundData, Rounds } from "@/lib/types"
+import { useState } from "react"
 
-export default async function GamesPage({ round }: { round?: number }) {
-  const { date, games } = await getData(round)
-  const { rounds, currentRound } = await getRounds(round)
+export default function Round({
+  rounds,
+  games,
+}: {
+  rounds: Rounds
+  games: RoundData
+}) {
+  const [loading, setLoading] = useState(false)
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <div className="flex flex-col w-full items-center justify-center px-4 py-2 bg-neutral-200 gap-1 dark:bg-stone-800">
-        <RoundSelect rounds={rounds} currentRound={currentRound} />
-        <small className="muted">{date}</small>
+    <RoundContext.Provider value={{ loading, setLoading }}>
+      <div
+        aria-disabled={loading}
+        className={`${loading && "muted pointer-events-none"} flex flex-col items-center gap-4`}
+      >
+        <div className="flex w-full flex-col items-center justify-center gap-1 bg-neutral-200 px-4 py-2 dark:bg-stone-800">
+          <RoundSelect
+            rounds={rounds.rounds}
+            currentRound={rounds.currentRound}
+          />
+          <small className="muted">{games.date}</small>
+        </div>
+        <Games games={games.games} />
       </div>
-      <Games games={games} />
-    </div>
+    </RoundContext.Provider>
   )
 }
