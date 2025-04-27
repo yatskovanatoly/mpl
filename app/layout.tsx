@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh flex-col items-center justify-center p-6">
+          <div className="flex min-h-dvh flex-col items-center justify-center p-4">
             <div className="fixed top-4 right-6">
               <ThemeToggle />
             </div>

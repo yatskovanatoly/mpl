@@ -8,7 +8,7 @@ import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
   return (
-    <div className={`flex max-w-2xl min-w-80 flex-col gap-4`}>
+    <div className={`flex max-w-2xl min-w-80 flex-col gap-4 px-2`}>
       {games.map(ResultItem)}
     </div>
   )
