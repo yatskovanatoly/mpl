@@ -35,9 +35,12 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
         side === "home"
           ? "justify-self-start"
           : "flex-row-reverse justify-self-end text-right"
+        // following styles might be better:
+        // ? "justify-self-end text-right"
+        // : "flex-row-reverse justify-self-start"
       }`}
     >
-      {team}
+      <span className="w-full">{team}</span>
       <Logo logo={logo} id={id} />
     </div>
   )
