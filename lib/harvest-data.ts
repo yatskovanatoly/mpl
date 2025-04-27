@@ -1,6 +1,6 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
-import { Game, Rounds } from "./types"
+import { Game, RoundData, Rounds } from "./types"
 import { MPL_ID, MYCHAMP_URL } from "./urls"
 
 const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
@@ -20,9 +20,10 @@ const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
   return $
 }
 
-const getData = async (round?: number) => {
+const getData = async (round?: number): Promise<RoundData> => {
   const games: Game[] = []
   const $ = await getCheerio(round)
+  const date = $(".category2").text().trim() || ""
 
   try {
     $(".result").each((i, el) => {
@@ -54,7 +55,7 @@ const getData = async (round?: number) => {
   } catch (e) {
     console.error(e)
   }
-  return games
+  return { date, games }
 }
 
 export const getRounds = async (round?: number): Promise<Rounds> => {
