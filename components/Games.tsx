@@ -85,7 +85,6 @@ const Time: FC<{ time: string | undefined }> = ({ time }) => {
     <div
       className={`flex w-full items-center justify-center gap-1 text-xs sm:text-sm`}
     >
-      <div>🕘</div>
       <div className="muted">{time}</div>
     </div>
   )
