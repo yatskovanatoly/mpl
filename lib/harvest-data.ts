@@ -7,6 +7,13 @@ const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
   const response = await axios.get(
     `${MYCHAMP_URL}/${MPL_ID}/games` +
       `${round ? `?round=${round.toString()}` : ""}`,
+    {
+      headers: {
+        "Cache-Control": "no-cache",
+        Pragma: "no-cache",
+        Expires: "0",
+      },
+    },
   )
   const $ = cheerio.load(response.data)
 
