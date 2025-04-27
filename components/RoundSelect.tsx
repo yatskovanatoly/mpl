@@ -30,7 +30,7 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
       aria-disabled={loading}
       className={`${loading && "muted pointer-events-none"} flex cursor-default items-center gap-1 max-sm:border-b`}
     >
-      <div>Раунд:</div>
+      <div>Тур:</div>
       <select ref={ref} defaultValue={initialRound} onChange={handleChange}>
         {rounds.map((round, i) => (
           <option key={i + round} value={round}>
