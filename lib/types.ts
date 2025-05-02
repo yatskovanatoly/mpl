@@ -3,6 +3,11 @@ export type RoundData = {
   games: Game[]
 }
 
+export type Round = {
+  stage: string
+  games: Game[]
+}
+
 export type Team = {
   id: string
   team: string
