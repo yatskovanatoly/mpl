@@ -3,7 +3,7 @@ import { BASE_URL } from "./lib/urls"
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL(`${BASE_URL}/**`)],
+    remotePatterns: [new URL(`https://${BASE_URL}/**`)],
   },
 }
 

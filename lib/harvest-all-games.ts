@@ -16,7 +16,7 @@ const getCheerio = async (): Promise<cheerio.CheerioAPI> => {
   return $
 }
 
-const getData = async (): Promise<Round[]> => {
+export const getAllRounds = async (): Promise<Round[]> => {
   const $ = await getCheerio()
 
   const rounds: Round[] = []
@@ -68,5 +68,3 @@ const getData = async (): Promise<Round[]> => {
   }
   return rounds
 }
-
-getData()
