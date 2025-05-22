@@ -8,17 +8,20 @@ import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
   return (
-    <div className={`flex max-w-2xl min-w-80 flex-col gap-4 px-2`}>
+    <div className={`flex max-w-2xl min-w-80 flex-col`}>
       {games.map(ResultItem)}
     </div>
   )
 }
 
-const ResultItem = (result: Game) => {
+const ResultItem = (result: Game, i: number) => {
   const { score, home, away, time } = result
 
   return (
-    <div key={result.home.team} className="grid grid-cols-[2fr_1fr_2fr]">
+    <div
+      key={result.home.team}
+      className={`grid grid-cols-[2fr_1fr_2fr] ${i % 2 ? "bg-neutral-200 dark:bg-stone-600" : "bg-stone-300 dark:bg-stone-500"} p-4`}
+    >
       <Team {...home} side="home" />
       <div className="text-md self-center transition-[font-size] sm:text-2xl">
         {score ? <Score score={score ?? time} /> : <Time time={time} />}
