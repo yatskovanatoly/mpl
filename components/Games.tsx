@@ -50,7 +50,7 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
 }
 
 const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
-  const logoUrl = `${BASE_URL}/${logo}`
+  const logoUrl = logo ? `https://${BASE_URL}/${logo}` : undefined
   const src = logosMap[id] ?? logoUrl
 
   if (!src) return null

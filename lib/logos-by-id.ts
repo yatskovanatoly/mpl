@@ -15,4 +15,5 @@ export const logosMap: Record<string, string> = {
   "40343": getPath("sd"),
   "29818": getPath("kleschi"),
   "5326": getPath("vp"),
+  "2186": getPath("beamish"),
 }
