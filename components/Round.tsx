@@ -23,7 +23,10 @@ export default function Round({
         aria-disabled={loading}
         className={`${loading && "muted pointer-events-none"} flex flex-col items-center`}
       >
-        <div ref={captureRef} className="flex flex-col items-center">
+        <div
+          ref={captureRef}
+          className="flex w-[40rem] max-w-full flex-col items-stretch"
+        >
           <div className="flex w-full flex-col items-center justify-center gap-1 bg-neutral-200 px-4 py-2 sm:p-4 dark:bg-stone-800">
             <RoundSelect
               rounds={rounds.rounds}

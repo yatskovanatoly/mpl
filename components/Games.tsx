@@ -8,7 +8,7 @@ import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
   return (
-    <div className={`flex max-w-2xl min-w-80 flex-col`}>
+    <div className="flex w-full flex-col">
       {games.map(ResultItem)}
     </div>
   )
@@ -20,7 +20,7 @@ const ResultItem = (result: Game, i: number) => {
   return (
     <div
       key={result.home.team}
-      className={`grid grid-cols-[2fr_1fr_2fr] ${i % 2 ? "bg-neutral-200 dark:bg-stone-600" : "bg-stone-300 dark:bg-stone-500"} p-4`}
+      className={`grid h-24 grid-cols-[2fr_1fr_2fr] items-center ${i % 2 ? "bg-neutral-200 dark:bg-stone-600" : "bg-stone-300 dark:bg-stone-500"} p-4 max-sm:h-20 max-sm:p-3`}
     >
       <Team {...home} side="home" />
       <div className="text-md self-center transition-[font-size] sm:text-2xl">
@@ -43,7 +43,7 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
         // : "flex-row-reverse justify-self-start"
       }`}
     >
-      <span className="w-full">{team}</span>
+      <span className="w-full leading-tight">{team}</span>
       <Logo logo={logo} id={id} />
     </div>
   )
