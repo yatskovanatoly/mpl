@@ -19,13 +19,14 @@ export default function RootLayout({
             <Link
               href="/games"
               aria-label="Moscow Punk-rock League games"
-              className="fixed top-2 left-2 size-10 sm:top-4 sm:left-4 sm:size-12"
+              className="fixed top-2 left-2 size-8 sm:top-4 sm:left-4 sm:size-10"
             >
               <Image
                 src="/mpl.png"
                 alt="Moscow Punk-rock League"
-                width={100}
-                height={100}
+                width={40}
+                height={40}
+                className="h-full w-full object-contain"
               />
             </Link>
             <div className="fixed top-4 right-6">
