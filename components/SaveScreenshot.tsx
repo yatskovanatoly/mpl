@@ -111,12 +111,7 @@ const SaveScreenshot: FC<{
         : "Копировать"
 
   return (
-    <div className="relative grid w-full max-w-full grid-cols-1 justify-center gap-2 pt-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
-      {showCopiedHint && (
-        <div className="absolute -top-8 right-0 rounded bg-[var(--foreground)] px-2 py-1 text-xs whitespace-nowrap text-[var(--background)] shadow-sm">
-          Изображение скопировано
-        </div>
-      )}
+    <div className="grid w-full max-w-full grid-cols-1 justify-center gap-2 pt-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
       <button
         type="button"
         disabled={disabled}
@@ -125,14 +120,21 @@ const SaveScreenshot: FC<{
       >
         {downloading ? "Сохраняю..." : "Скачать PNG"}
       </button>
-      <button
-        type="button"
-        disabled={disabled}
-        onClick={copy}
-        className="rounded bg-[var(--button-bg)] px-2 py-1 text-xs disabled:opacity-40 min-[360px]:px-3 min-[360px]:text-sm"
-      >
-        {copyLabel}
-      </button>
+      <div className="relative flex">
+        {showCopiedHint && (
+          <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 rounded bg-[var(--foreground)] px-2 py-1 text-xs whitespace-nowrap text-[var(--background)] shadow-sm">
+            Изображение скопировано
+          </div>
+        )}
+        <button
+          type="button"
+          disabled={disabled}
+          onClick={copy}
+          className="w-full rounded bg-[var(--button-bg)] px-2 py-1 text-xs disabled:opacity-40 min-[360px]:px-3 min-[360px]:text-sm"
+        >
+          {copyLabel}
+        </button>
+      </div>
     </div>
   )
 }

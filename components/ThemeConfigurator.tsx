@@ -1,41 +1,35 @@
 "use client"
 
+import {
+  CUSTOM_THEME_STORAGE_KEY,
+  customThemeFields,
+  normalizeColorToHex,
+} from "@/lib/custom-theme"
+import type { ThemeColors, ThemeVariable } from "@/lib/custom-theme"
 import { ChangeEvent, useEffect, useMemo, useState } from "react"
 
-const STORAGE_KEY = "mpl-custom-theme"
-
-const themeFields = [
-  { label: "Фон", variable: "--background" },
-  { label: "Текст", variable: "--foreground" },
-  { label: "Шапка", variable: "--panel" },
-  { label: "Строка A", variable: "--row-a" },
-  { label: "Строка B", variable: "--row-b" },
-  { label: "Кнопка", variable: "--button-bg" },
-] as const
-
-type ThemeVariable = (typeof themeFields)[number]["variable"]
-type ThemeColors = Record<ThemeVariable, string>
-
-const hexColor = /^#[0-9a-fA-F]{6}$/
-
-const emptyTheme = themeFields.reduce((theme, field) => {
+const emptyTheme = customThemeFields.reduce((theme, field) => {
   theme[field.variable] = "#000000"
   return theme
 }, {} as ThemeColors)
 
+const stringifyTheme = (theme: ThemeColors) => JSON.stringify(theme, null, 2)
+
 const readCurrentTheme = () => {
   const styles = getComputedStyle(document.documentElement)
 
-  return themeFields.reduce((theme, field) => {
-    theme[field.variable] =
+  return customThemeFields.reduce((theme, field) => {
+    const raw =
       styles.getPropertyValue(field.variable).trim() ||
       emptyTheme[field.variable]
+    theme[field.variable] =
+      normalizeColorToHex(raw) ?? emptyTheme[field.variable]
     return theme
   }, {} as ThemeColors)
 }
 
 const applyTheme = (theme: ThemeColors) => {
-  for (const field of themeFields) {
+  for (const field of customThemeFields) {
     document.documentElement.style.setProperty(
       field.variable,
       theme[field.variable],
@@ -44,25 +38,67 @@ const applyTheme = (theme: ThemeColors) => {
 }
 
 const clearTheme = () => {
-  for (const field of themeFields) {
+  for (const field of customThemeFields) {
     document.documentElement.style.removeProperty(field.variable)
   }
 }
 
-const parseStoredTheme = (value: string | null) => {
+const parseStoredTheme = (value: string | null, fallback: ThemeColors) => {
   if (!value) return null
 
-  try {
-    const parsed = JSON.parse(value) as Partial<Record<ThemeVariable, unknown>>
-    const theme = { ...emptyTheme }
+  const result = parseThemeJson(value, fallback)
+  return result.theme
+}
 
-    for (const field of themeFields) {
-      const color = parsed[field.variable]
-      if (typeof color !== "string" || !hexColor.test(color)) return null
-      theme[field.variable] = color
+const parseThemeJson = (value: string, fallback: ThemeColors) => {
+  if (!value.trim()) {
+    return { theme: null, error: "JSON пустой" }
+  }
+
+  try {
+    const parsed = JSON.parse(value) as unknown
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+      return { theme: null, error: "JSON должен быть объектом" }
     }
 
-    return theme
+    const storedTheme = parsed as Partial<Record<ThemeVariable, unknown>>
+    const theme = { ...fallback }
+    let hasStoredColor = false
+
+    for (const field of customThemeFields) {
+      const color = storedTheme[field.variable]
+      if (color === undefined) continue
+      if (typeof color !== "string") {
+        return {
+          theme: null,
+          error: `${field.label}: нужен цвет #rrggbb`,
+        }
+      }
+      const normalized = normalizeColorToHex(color)
+      if (!normalized) {
+        return {
+          theme: null,
+          error: `${field.label}: нужен цвет #rrggbb`,
+        }
+      }
+      theme[field.variable] = normalized
+      hasStoredColor = true
+    }
+
+    return hasStoredColor
+      ? { theme, error: "" }
+      : { theme: null, error: "Нет цветов темы" }
+  } catch {
+    return { theme: null, error: "Некорректный JSON" }
+  }
+}
+
+const readStoredTheme = (fallback: ThemeColors) => {
+  try {
+    return parseStoredTheme(
+      localStorage.getItem(CUSTOM_THEME_STORAGE_KEY),
+      fallback,
+    )
   } catch {
     return null
   }
@@ -71,49 +107,108 @@ const parseStoredTheme = (value: string | null) => {
 export default function ThemeConfigurator() {
   const [open, setOpen] = useState(false)
   const [colors, setColors] = useState<ThemeColors>(emptyTheme)
+  const [jsonBaseColors, setJsonBaseColors] = useState<ThemeColors>(emptyTheme)
+  const [jsonText, setJsonText] = useState(stringifyTheme(emptyTheme))
+  const [savedJson, setSavedJson] = useState("")
   const [status, setStatus] = useState("")
+
+  const parseResult = useMemo(
+    () => parseThemeJson(jsonText, jsonBaseColors),
+    [jsonText, jsonBaseColors],
+  )
+  const jsonError = parseResult.error
+  const canSave =
+    !!parseResult.theme &&
+    stringifyTheme(parseResult.theme) !== savedJson
 
   useEffect(() => {
     const currentTheme = readCurrentTheme()
-    const storedTheme = parseStoredTheme(localStorage.getItem(STORAGE_KEY))
+    const storedTheme = readStoredTheme(currentTheme)
     const initialTheme = storedTheme ?? currentTheme
+    const initialJson = stringifyTheme(initialTheme)
 
     setColors(initialTheme)
+    setJsonBaseColors(initialTheme)
+    setJsonText(initialJson)
+    setSavedJson(initialJson)
     if (storedTheme) applyTheme(storedTheme)
   }, [])
-
-  const json = useMemo(() => JSON.stringify(colors, null, 2), [colors])
 
   const handleColorChange =
     (variable: ThemeVariable) => (event: ChangeEvent<HTMLInputElement>) => {
       const nextColors = { ...colors, [variable]: event.target.value }
 
       setColors(nextColors)
+      setJsonBaseColors(nextColors)
+      setJsonText(stringifyTheme(nextColors))
       applyTheme(nextColors)
       setStatus("Предпросмотр темы")
     }
 
+  const handleJsonChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value
+    setJsonText(value)
+
+    const result = parseThemeJson(value, jsonBaseColors)
+    if (!result.theme) {
+      setStatus("")
+      return
+    }
+
+    setColors(result.theme)
+    applyTheme(result.theme)
+    setStatus("Предпросмотр темы")
+  }
+
   const saveTheme = () => {
-    localStorage.setItem(STORAGE_KEY, json)
-    setStatus("Тема сохранена")
+    if (!parseResult.theme || !canSave) return
+
+    const nextJson = stringifyTheme(parseResult.theme)
+
+    try {
+      localStorage.setItem(CUSTOM_THEME_STORAGE_KEY, nextJson)
+      setColors(parseResult.theme)
+      setJsonBaseColors(parseResult.theme)
+      setJsonText(nextJson)
+      setSavedJson(nextJson)
+      applyTheme(parseResult.theme)
+      setStatus("Тема сохранена")
+    } catch {
+      setStatus("Не удалось сохранить тему")
+    }
   }
 
   const resetTheme = () => {
-    localStorage.removeItem(STORAGE_KEY)
+    try {
+      localStorage.removeItem(CUSTOM_THEME_STORAGE_KEY)
+    } catch {
+      setStatus("Не удалось очистить хранилище")
+      return
+    }
+
     clearTheme()
 
     const currentTheme = readCurrentTheme()
+    const nextJson = stringifyTheme(currentTheme)
     setColors(currentTheme)
+    setJsonBaseColors(currentTheme)
+    setJsonText(nextJson)
+    setSavedJson(nextJson)
     setStatus("Тема сброшена")
   }
 
   const copyJson = async () => {
-    await navigator.clipboard.writeText(json)
+    await navigator.clipboard.writeText(jsonText)
     setStatus("JSON скопирован")
   }
 
   const toggleOpen = () => {
-    if (!open) setColors(readCurrentTheme())
+    if (!open) {
+      const currentTheme = readCurrentTheme()
+      setColors(currentTheme)
+      setJsonBaseColors(currentTheme)
+      setJsonText(stringifyTheme(currentTheme))
+    }
     setOpen(!open)
   }
 
@@ -153,7 +248,7 @@ export default function ThemeConfigurator() {
 
             <div className="p-3">
               <div className="grid gap-1.5">
-                {themeFields.map((field) => (
+                {customThemeFields.map((field) => (
                   <label
                     key={field.variable}
                     className="grid grid-cols-[minmax(0,1fr)_2rem_4.5rem] items-center gap-2 text-xs min-[360px]:text-sm"
@@ -176,9 +271,14 @@ export default function ThemeConfigurator() {
                 <span>JSON (текст)</span>
                 <div className="relative mt-1">
                   <textarea
-                    readOnly
-                    value={json}
-                    className="h-24 w-full resize-none rounded border border-black/10 bg-[var(--background)] p-2 pr-10 font-mono text-[10px] leading-tight text-[var(--foreground)] sm:text-xs dark:border-white/10"
+                    value={jsonText}
+                    onChange={handleJsonChange}
+                    aria-invalid={!!jsonError}
+                    className={`h-24 w-full resize-none rounded border bg-[var(--background)] p-2 pr-10 font-mono text-[10px] leading-tight text-[var(--foreground)] sm:text-xs ${
+                      jsonError
+                        ? "border-red-500 dark:border-red-400"
+                        : "border-black/10 dark:border-white/10"
+                    }`}
                   />
                   <button
                     type="button"
@@ -208,7 +308,8 @@ export default function ThemeConfigurator() {
                 <button
                   type="button"
                   onClick={saveTheme}
-                  className="rounded bg-[var(--button-bg)] px-3 py-1.5 text-xs min-[360px]:text-sm"
+                  disabled={!canSave}
+                  className="rounded bg-[var(--button-bg)] px-3 py-1.5 text-xs min-[360px]:text-sm disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Сохранить
                 </button>
@@ -221,7 +322,15 @@ export default function ThemeConfigurator() {
                 </button>
               </div>
 
-              <p className="mt-1.5 h-4 text-xs opacity-70">{status}</p>
+              <p
+                className={`mt-1.5 min-h-4 text-xs ${
+                  jsonError
+                    ? "text-red-600 dark:text-red-400"
+                    : "opacity-70"
+                }`}
+              >
+                {jsonError || status}
+              </p>
             </div>
           </section>
         </div>
