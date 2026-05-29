@@ -95,7 +95,7 @@ export default function ThemeConfigurator() {
 
   const saveTheme = () => {
     localStorage.setItem(STORAGE_KEY, json)
-    setStatus("Сохранено в localStorage")
+    setStatus("Тема сохранена")
   }
 
   const resetTheme = () => {
@@ -118,19 +118,19 @@ export default function ThemeConfigurator() {
   }
 
   return (
-    <div className="fixed right-2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] left-2 z-50 flex max-h-[calc(100dvh-1rem)] flex-col items-end gap-2 sm:right-4 sm:bottom-[max(1rem,env(safe-area-inset-bottom))] sm:left-auto">
+    <>
       {open && (
-        <>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:items-end sm:justify-end sm:p-0 sm:pb-[calc(3.25rem+max(0.5rem,env(safe-area-inset-bottom)))] sm:pr-4">
           <button
             type="button"
             aria-label="Закрыть настройку темы"
-            className="fixed inset-0 z-40 bg-black/20 sm:hidden"
+            className="absolute inset-0 bg-black/20 sm:bg-transparent"
             onClick={() => setOpen(false)}
           />
           <section
             aria-label="Настройка темы"
             id="theme-configuration"
-            className="relative z-50 w-full max-w-[22rem] rounded-xl border border-black/10 bg-[var(--panel)] text-[var(--foreground)] shadow-2xl dark:border-white/10"
+            className="relative z-10 w-full max-w-[22rem] rounded-xl border border-black/10 bg-[var(--panel)] text-[var(--foreground)] shadow-2xl dark:border-white/10"
           >
             <div className="border-b border-black/5 p-3 dark:border-white/10">
               <div className="flex items-start justify-between gap-3">
@@ -224,18 +224,18 @@ export default function ThemeConfigurator() {
               <p className="mt-1.5 h-4 text-xs opacity-70">{status}</p>
             </div>
           </section>
-        </>
+        </div>
       )}
 
       <button
         type="button"
         onClick={toggleOpen}
-        className="relative z-50 rounded-full bg-[var(--button-bg)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] shadow-lg sm:px-4 sm:py-2 sm:text-sm"
+        className="fixed right-2 bottom-[max(0.5rem,env(safe-area-inset-bottom))] z-50 rounded-full bg-[var(--button-bg)] px-3 py-1.5 text-xs font-medium text-[var(--foreground)] shadow-lg sm:right-4 sm:bottom-[max(1rem,env(safe-area-inset-bottom))] sm:px-4 sm:py-2 sm:text-sm"
         aria-expanded={open}
         aria-controls="theme-configuration"
       >
         ⚙︎ Тема
       </button>
-    </div>
+    </>
   )
 }
