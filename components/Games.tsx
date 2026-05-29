@@ -2,7 +2,6 @@
 
 import { logosMap } from "@/lib/logos-by-id"
 import { Game, Team as TeamType } from "@/lib/types"
-import { BASE_URL } from "@/lib/urls"
 import Image from "next/image"
 import { FC } from "react"
 
@@ -46,7 +45,7 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
 }
 
 const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
-  const logoUrl = logo ? `https://${BASE_URL}/${logo}` : undefined
+  const logoUrl = logo ? `/api/team-logo/${logo}` : undefined
   const src = logosMap[id] ?? logoUrl
 
   if (!src) return null

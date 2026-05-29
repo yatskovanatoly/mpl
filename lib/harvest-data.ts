@@ -1,21 +1,28 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
+import { unstable_cache } from "next/cache"
 import { Game, RoundData, Rounds } from "./types"
 import { BASE_URL, MPL_ID } from "./urls"
 
+const fetchRoundHtml = unstable_cache(
+  async (roundKey: string) => {
+    const response = await axios.get(
+      `https://${BASE_URL}/championships/${MPL_ID}/games` +
+        `${roundKey === "current" ? "" : `?round=${roundKey}`}`,
+    )
+
+    return response.data as string
+  },
+  ["mpl-round-html"],
+  {
+    revalidate: 60,
+    tags: ["mpl-round-html"],
+  },
+)
+
 const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
-  const response = await axios.get(
-    `https://${BASE_URL}/championships/${MPL_ID}/games` +
-      `${round ? `?round=${round.toString()}` : ""}`,
-    {
-      headers: {
-        "Cache-Control": "no-cache",
-        Pragma: "no-cache",
-        Expires: "0",
-      },
-    },
-  )
-  const $ = cheerio.load(response.data)
+  const html = await fetchRoundHtml(round?.toString() ?? "current")
+  const $ = cheerio.load(html)
 
   return $
 }
