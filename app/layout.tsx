@@ -1,3 +1,4 @@
+import ThemeConfigurator from "@/components/ThemeConfigurator"
 import ThemeToggle from "@/components/ThemeToggle"
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
@@ -15,11 +16,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh flex-col items-center justify-center p-4">
+          <div className="flex min-h-dvh w-full flex-col items-center justify-center px-3 pt-16 pb-28 sm:p-4">
             <Link
               href="/games"
               aria-label="Moscow Punk-rock League games"
-              className="fixed top-2 left-2 size-8 sm:top-4 sm:left-4 sm:size-10"
+              className="fixed top-2 left-2 z-40 size-7 sm:top-4 sm:left-4 sm:size-10"
             >
               <Image
                 src="/mpl.png"
@@ -29,9 +30,10 @@ export default function RootLayout({
                 className="h-full w-full object-contain"
               />
             </Link>
-            <div className="fixed top-4 right-6">
+            <div className="fixed top-2 right-3 z-40 sm:top-4 sm:right-6">
               <ThemeToggle />
             </div>
+            <ThemeConfigurator />
             {children}
           </div>
         </ThemeProvider>

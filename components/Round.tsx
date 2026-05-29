@@ -21,13 +21,13 @@ export default function Round({
     <RoundContext.Provider value={{ loading, setLoading }}>
       <div
         aria-disabled={loading}
-        className={`${loading && "muted pointer-events-none"} flex flex-col items-center`}
+        className={`${loading && "muted pointer-events-none"} flex w-full min-w-0 flex-col items-center`}
       >
         <div
           ref={captureRef}
-          className="flex w-[40rem] max-w-full flex-col items-stretch"
+          className="flex w-full max-w-[40rem] min-w-0 flex-col items-stretch"
         >
-          <div className="flex w-full flex-col items-center justify-center gap-1 bg-neutral-200 px-4 py-2 sm:p-4 dark:bg-stone-800">
+          <div className="flex w-full min-w-0 flex-col items-center justify-center gap-1 bg-[var(--panel)] px-2 py-2 sm:p-4">
             <RoundSelect
               rounds={rounds.rounds}
               currentRound={rounds.currentRound}

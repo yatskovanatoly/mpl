@@ -3,11 +3,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --panel: #e5e5e5;
+  --row-a: #d6d3d1;
+  --row-b: #e5e5e5;
+  --button-bg: #e5e5e5;
 }
 
 .dark {
   --foreground: #ffffff;
   --background: #171717;
+  --panel: #292524;
+  --row-a: #78716c;
+  --row-b: #57534e;
+  --button-bg: #44403c;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

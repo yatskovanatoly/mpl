@@ -111,9 +111,9 @@ const SaveScreenshot: FC<{
         : "Копировать"
 
   return (
-    <div className="relative flex gap-2 pt-2">
+    <div className="relative grid w-full max-w-full grid-cols-1 justify-center gap-2 pt-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
       {showCopiedHint && (
-        <div className="absolute -top-8 right-0 rounded bg-neutral-900 px-2 py-1 text-xs whitespace-nowrap text-white shadow-sm dark:bg-neutral-100 dark:text-neutral-900">
+        <div className="absolute -top-8 right-0 rounded bg-[var(--foreground)] px-2 py-1 text-xs whitespace-nowrap text-[var(--background)] shadow-sm">
           Изображение скопировано
         </div>
       )}
@@ -121,7 +121,7 @@ const SaveScreenshot: FC<{
         type="button"
         disabled={disabled}
         onClick={download}
-        className="rounded bg-neutral-200 px-3 py-1 text-sm disabled:opacity-40 dark:bg-stone-700"
+        className="rounded bg-[var(--button-bg)] px-2 py-1 text-xs disabled:opacity-40 min-[360px]:px-3 min-[360px]:text-sm"
       >
         {downloading ? "Сохраняю..." : "Скачать PNG"}
       </button>
@@ -129,7 +129,7 @@ const SaveScreenshot: FC<{
         type="button"
         disabled={disabled}
         onClick={copy}
-        className="rounded bg-neutral-200 px-3 py-1 text-sm disabled:opacity-40 dark:bg-stone-700"
+        className="rounded bg-[var(--button-bg)] px-2 py-1 text-xs disabled:opacity-40 min-[360px]:px-3 min-[360px]:text-sm"
       >
         {copyLabel}
       </button>
