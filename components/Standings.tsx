@@ -17,10 +17,6 @@ const Standings = ({ standings }: StandingsData) => {
           ref={captureRef}
           className="flex w-full max-w-[40rem] min-w-0 flex-col items-stretch"
         >
-          <div className="flex w-full min-w-0 flex-col items-center justify-center gap-1 bg-[var(--panel)] px-2 py-3 sm:p-4">
-            <h1 className="text-lg font-bold sm:text-xl">Таблица турнира</h1>
-            <small className="muted">Moscow Punk Rock League</small>
-          </div>
           <div className="flex w-full flex-col">
             <Header />
             {standings.map((standing, index) => (
@@ -68,7 +64,7 @@ const Standings = ({ standings }: StandingsData) => {
 }
 
 const Header = () => (
-  <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_1.75rem_2.75rem] gap-x-1.5 bg-[var(--panel)] px-2 py-2 text-xs font-bold uppercase opacity-80 sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_3.5rem] sm:gap-x-2 sm:px-4">
+  <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_1.75rem_2.75rem] gap-x-1.5 bg-[var(--panel)] px-2 py-2 text-xs font-bold uppercase opacity-80 sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_3.5rem] sm:gap-x-2 sm:px-4 items-center">
     <div />
     <div>Команда</div>
     <div className="text-center">О</div>

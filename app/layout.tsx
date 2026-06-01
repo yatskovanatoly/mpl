@@ -1,6 +1,7 @@
 import ThemeConfigurator from "@/components/ThemeConfigurator"
 import ThemeToggle from "@/components/ThemeToggle"
 import NavigationTabs from "@/components/NavigationTabs"
+import SwipeNavigation from "@/components/SwipeNavigation"
 import {
   CUSTOM_THEME_STORAGE_KEY,
   customThemeFields,
@@ -49,7 +50,7 @@ export default function RootLayout({
               <ThemeToggle />
             </div>
             <ThemeConfigurator />
-            {children}
+            <SwipeNavigation>{children}</SwipeNavigation>
           </div>
         </ThemeProvider>
       </body>
