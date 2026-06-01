@@ -7,7 +7,7 @@ import { StandingsData } from "@/lib/types"
 import { useRef, useState } from "react"
 
 const TABLE_GRID =
-  "grid-cols-[0.875rem_minmax(0,1fr)_repeat(8,minmax(0,1.0625rem))_minmax(2.5rem,2.75rem)] sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_4rem]"
+  "grid-cols-[0.875rem_minmax(0,1fr)_repeat(8,minmax(0,1.0625rem))_minmax(2.75rem,3rem)] sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_4rem]"
 
 const Standings = ({ standings }: StandingsData) => {
   const [loading, setLoading] = useState(false)
@@ -87,11 +87,11 @@ const FormDots = ({
 }: {
   form: StandingsData["standings"][number]["form"]
 }) => (
-  <div className="flex justify-center gap-1 px-0.5 py-0.5 sm:gap-1.5 sm:px-1">
+  <div className="flex justify-center gap-0.5 px-0.5 py-0.5 sm:gap-1.5 sm:px-1">
     {form.map((result, index) => (
       <span
         key={`${result}-${index}`}
-        className={`size-1.5 rounded-full sm:size-2.5 ${
+        className={`block size-1.5 shrink-0 rounded-full sm:size-2.5 ${
           result === "win"
             ? "bg-green-500"
             : result === "draw"
