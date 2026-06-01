@@ -1,5 +1,6 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
+import { sanitizeTeamName } from "./sanitize-team-name"
 import { Game, Round } from "./types"
 import { MPL_ALL_GAMES } from "./urls"
 
@@ -50,12 +51,12 @@ export const getAllRounds = async (): Promise<Round[]> => {
             time,
             home: {
               id: homeId,
-              team: home,
+              team: sanitizeTeamName(home),
             },
             score,
             away: {
               id: awayId,
-              team: away,
+              team: sanitizeTeamName(away),
             },
           }
 

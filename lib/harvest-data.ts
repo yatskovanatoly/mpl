@@ -1,7 +1,8 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
-import { Game, RoundData, Rounds, Standing, StandingsData } from "./types"
+import { sanitizeTeamName } from "./sanitize-team-name"
+import { Game, RoundData, Rounds, Standing, StandingForm, StandingsData } from "./types"
 import { BASE_URL, MPL_ID } from "./urls"
 
 const fetchRoundHtml = unstable_cache(
@@ -71,7 +72,7 @@ const getData = async (round?: number): Promise<RoundData> => {
 
           game[className] = {
             id,
-            team: $child.text().trim(),
+            team: sanitizeTeamName($child.text().trim()),
             logo: imgUrl,
           }
         } else if (className === "score") {
@@ -140,19 +141,26 @@ export const getStandings = async (): Promise<StandingsData> => {
         .find(".circlewin, .circledraw, .circlelose")
         .toArray()
         .map((formEl) => {
-          const className = $(formEl).attr("class") ?? ""
+          const $formEl = $(formEl)
+          const className = $formEl.attr("class") ?? ""
+          let result: StandingForm["result"] = "loss"
 
-          if (className.includes("circlewin")) return "win"
-          if (className.includes("circledraw")) return "draw"
+          if (className.includes("circlewin")) result = "win"
+          else if (className.includes("circledraw")) result = "draw"
 
-          return "loss"
+          return {
+            result,
+            title: $formEl.attr("title")?.trim() ?? "",
+          }
         })
 
       standings.push({
         position: cellText(0),
         team: {
           id,
-          team: teamLink.text().trim() || teamCell.text().trim(),
+          team: sanitizeTeamName(
+            teamLink.text().trim() || teamCell.text().trim(),
+          ),
           logo,
         },
         points: cellText(2),

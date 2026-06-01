@@ -40,7 +40,10 @@ export type Standing = {
   form: StandingForm[]
 }
 
-export type StandingForm = "win" | "draw" | "loss"
+export type StandingForm = {
+  result: "win" | "draw" | "loss"
+  title: string
+}
 
 export type StandingsData = {
   standings: Standing[]

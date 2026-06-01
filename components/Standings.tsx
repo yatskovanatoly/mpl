@@ -88,17 +88,17 @@ const FormDots = ({
   form: StandingsData["standings"][number]["form"]
 }) => (
   <div className="flex justify-center gap-0.5 px-0.5 py-0.5 sm:gap-1.5 sm:px-1">
-    {form.map((result, index) => (
+    {form.map((match, index) => (
       <span
-        key={`${result}-${index}`}
+        key={`${match.result}-${index}`}
         className={`block size-1.5 shrink-0 rounded-full sm:size-2.5 ${
-          result === "win"
+          match.result === "win"
             ? "bg-green-500"
-            : result === "draw"
+            : match.result === "draw"
               ? "bg-yellow-400"
               : "bg-red-500"
         }`}
-        title={result}
+        title={match.title || undefined}
       />
     ))}
   </div>
