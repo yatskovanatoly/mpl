@@ -26,6 +26,26 @@ export type Rounds = {
   currentRound: string | undefined
 }
 
+export type Standing = {
+  position: string
+  team: Team
+  points: string
+  games: string
+  wins: string
+  draws: string
+  losses: string
+  goalsFor: string
+  goalsAgainst: string
+  goalDiff: string
+  form: StandingForm[]
+}
+
+export type StandingForm = "win" | "draw" | "loss"
+
+export type StandingsData = {
+  standings: Standing[]
+}
+
 export type ParamsWithRound = {
   params: Promise<{ round: string }>
 }

@@ -1,7 +1,7 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
-import { Game, RoundData, Rounds } from "./types"
+import { Game, RoundData, Rounds, Standing, StandingsData } from "./types"
 import { BASE_URL, MPL_ID } from "./urls"
 
 const fetchRoundHtml = unstable_cache(
@@ -22,6 +22,28 @@ const fetchRoundHtml = unstable_cache(
 
 const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
   const html = await fetchRoundHtml(round?.toString() ?? "current")
+  const $ = cheerio.load(html)
+
+  return $
+}
+
+const fetchStandingsHtml = unstable_cache(
+  async () => {
+    const response = await axios.get(
+      `https://${BASE_URL}/championships/${MPL_ID}/show_table`,
+    )
+
+    return response.data as string
+  },
+  ["mpl-standings-html"],
+  {
+    revalidate: 60,
+    tags: ["mpl-standings-html"],
+  },
+)
+
+const getStandingsCheerio = async (): Promise<cheerio.CheerioAPI> => {
+  const html = await fetchStandingsHtml()
   const $ = cheerio.load(html)
 
   return $
@@ -81,6 +103,74 @@ export const getRounds = async (round?: number): Promise<Rounds> => {
     console.error(e)
   }
   return { rounds, currentRound }
+}
+
+export const getStandings = async (): Promise<StandingsData> => {
+  const standings: Standing[] = []
+  const $ = await getStandingsCheerio()
+
+  try {
+    const table = $("table")
+      .toArray()
+      .map((el) => $(el))
+      .find(($table) => {
+        const firstRowText = $table.find("tr").first().text()
+
+        return /Команда|Team/i.test(firstRowText)
+      })
+
+    if (!table) return { standings }
+
+    table.find("tr").each((_, row) => {
+      const cells = $(row).find("td")
+
+      if (cells.length < 10) return
+
+      const cellText = (index: number) => $(cells[index]).text().trim()
+      const teamCell = $(cells[1])
+      const teamLink = teamCell.find("a").first()
+      const href = teamLink.attr("href") ?? ""
+      const id = href.split("/").filter(Boolean).at(-1) ?? ""
+      const logo = teamCell
+        .find("img")
+        .attr("src")
+        ?.replace("mini", "large")
+        .replace(/^\//, "")
+      const form = $(cells[11])
+        .find(".circlewin, .circledraw, .circlelose")
+        .toArray()
+        .map((formEl) => {
+          const className = $(formEl).attr("class") ?? ""
+
+          if (className.includes("circlewin")) return "win"
+          if (className.includes("circledraw")) return "draw"
+
+          return "loss"
+        })
+
+      standings.push({
+        position: cellText(0),
+        team: {
+          id,
+          team: teamLink.text().trim() || teamCell.text().trim(),
+          logo,
+        },
+        points: cellText(2),
+        games: cellText(3),
+        wins: cellText(4),
+        draws: cellText(5),
+        losses: cellText(6),
+        goalsFor: cellText(7),
+        goalsAgainst: cellText(8),
+        goalDiff: cellText(9),
+        form,
+      })
+    })
+  } catch (e) {
+    console.error(e)
+  }
+
+  return { standings }
 }
 
 export default getData

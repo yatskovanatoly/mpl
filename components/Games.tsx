@@ -1,8 +1,7 @@
 "use client"
 
-import { logosMap } from "@/lib/logos-by-id"
+import TeamLogo from "@/components/TeamLogo"
 import { Game, Team as TeamType } from "@/lib/types"
-import Image from "next/image"
 import { FC } from "react"
 
 const Games: FC<{ games: Game[] }> = ({ games }) => {
@@ -39,19 +38,11 @@ const Team: FC<TeamType & { side: string }> = ({ team, logo, side, id }) => {
       }`}
     >
       <span className="w-full leading-tight">{team}</span>
-      <Logo logo={logo} id={id} />
-    </div>
-  )
-}
-
-const Logo: FC<{ id: string; logo?: string }> = ({ id, logo }) => {
-  const logoUrl = logo ? `/api/team-logo/${logo}` : undefined
-  const src = logosMap[id] ?? logoUrl
-
-  if (!src) return null
-  return (
-    <div className="size-12 shrink-0 transition-all duration-300 max-sm:size-8">
-      <Image height={48} width={48} alt={"logo"} src={src} />
+      <TeamLogo
+        id={id}
+        logo={logo}
+        className="size-12 transition-all duration-300 max-sm:size-8"
+      />
     </div>
   )
 }

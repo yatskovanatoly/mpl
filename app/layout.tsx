@@ -1,5 +1,6 @@
 import ThemeConfigurator from "@/components/ThemeConfigurator"
 import ThemeToggle from "@/components/ThemeToggle"
+import NavigationTabs from "@/components/NavigationTabs"
 import {
   CUSTOM_THEME_STORAGE_KEY,
   customThemeFields,
@@ -29,7 +30,7 @@ export default function RootLayout({
       </head>
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh w-full flex-col items-center justify-center px-3 pt-16 pb-28 sm:p-4">
+          <div className="flex min-h-dvh w-full flex-col items-center justify-center px-3 pt-16 pb-28 sm:px-4 sm:pt-16 sm:pb-4">
             <Link
               href="/games"
               aria-label="Moscow Punk-rock League games"
@@ -43,6 +44,7 @@ export default function RootLayout({
                 className="h-full w-full object-contain"
               />
             </Link>
+            <NavigationTabs />
             <div className="fixed top-2 right-3 z-40 sm:top-4 sm:right-6">
               <ThemeToggle />
             </div>
