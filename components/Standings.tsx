@@ -6,6 +6,9 @@ import RoundContext from "@/lib/round-context"
 import { StandingsData } from "@/lib/types"
 import { useRef, useState } from "react"
 
+const TABLE_GRID =
+  "grid-cols-[0.875rem_minmax(0,1fr)_repeat(8,minmax(0,1.0625rem))_minmax(2.5rem,2.75rem)] sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_4rem]"
+
 const Standings = ({ standings }: StandingsData) => {
   const [loading, setLoading] = useState(false)
   const captureRef = useRef<HTMLDivElement>(null)
@@ -22,36 +25,30 @@ const Standings = ({ standings }: StandingsData) => {
             {standings.map((standing, index) => (
               <div
                 key={standing.team.id || standing.team.team}
-                className={`grid min-h-16 grid-cols-[1.25rem_minmax(0,1fr)_1.75rem_2.75rem] items-center gap-x-1.5 gap-y-2 px-2 py-2 text-sm ${
+                className={`grid ${TABLE_GRID} min-h-12 items-center gap-x-0.5 gap-y-1 px-1 py-1.5 text-[0.6875rem] tabular-nums sm:min-h-16 sm:gap-x-2 sm:gap-y-2 sm:px-4 sm:py-2 sm:text-sm ${
                   index % 2 ? "bg-[var(--row-b)]" : "bg-[var(--row-a)]"
-                } sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_3.5rem] sm:gap-x-2 sm:px-4`}
+                }`}
               >
                 <div className="text-center font-bold">{standing.position}</div>
-                <div className="flex min-w-0 items-center gap-3 font-medium">
+                <div className="flex min-w-0 items-center gap-1.5 font-medium sm:gap-3">
                   <TeamLogo
                     id={standing.team.id}
                     logo={standing.team.logo}
                     size={40}
-                    className="size-8 shrink-0 sm:size-10"
+                    className="size-6 shrink-0 sm:size-10"
                   />
                   <span className="min-w-0 truncate leading-tight sm:overflow-visible sm:whitespace-normal">
                     {standing.team.team}
                   </span>
                 </div>
                 <Stat value={standing.points} className="font-bold" />
-                <MobileRecord
-                  games={standing.games}
-                  wins={standing.wins}
-                  draws={standing.draws}
-                  losses={standing.losses}
-                />
-                <DesktopStat value={standing.games} />
-                <DesktopStat value={standing.wins} />
-                <DesktopStat value={standing.draws} />
-                <DesktopStat value={standing.losses} />
-                <DesktopStat value={standing.goalsFor} />
-                <DesktopStat value={standing.goalsAgainst} />
-                <DesktopStat value={standing.goalDiff} />
+                <Stat value={standing.games} />
+                <Stat value={standing.wins} />
+                <Stat value={standing.draws} />
+                <Stat value={standing.losses} />
+                <Stat value={standing.goalsFor} />
+                <Stat value={standing.goalsAgainst} />
+                <Stat value={standing.goalDiff} />
                 <FormDots form={standing.form} />
               </div>
             ))}
@@ -64,19 +61,20 @@ const Standings = ({ standings }: StandingsData) => {
 }
 
 const Header = () => (
-  <div className="grid grid-cols-[1.25rem_minmax(0,1fr)_1.75rem_2.75rem] gap-x-1.5 bg-[var(--panel)] px-2 py-2 text-xs font-bold uppercase opacity-80 sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_3.5rem] sm:gap-x-2 sm:px-4 items-center">
+  <div
+    className={`grid ${TABLE_GRID} items-center gap-x-0.5 bg-[var(--panel)] px-1 py-1.5 text-[0.625rem] font-bold uppercase opacity-80 sm:gap-x-2 sm:px-4 sm:py-2 sm:text-xs`}
+  >
     <div />
     <div>Команда</div>
     <div className="text-center">О</div>
-    <div className="text-center sm:hidden">И-В-Н-П</div>
-    <div className="hidden text-center sm:block">И</div>
-    <div className="hidden text-center sm:block">В</div>
-    <div className="hidden text-center sm:block">Н</div>
-    <div className="hidden text-center sm:block">П</div>
-    <div className="hidden text-center sm:block">ГЗ</div>
-    <div className="hidden text-center sm:block">ГП</div>
-    <div className="hidden text-center sm:block">+/-</div>
-    <div className="hidden text-center sm:block">Форма</div>
+    <div className="text-center">И</div>
+    <div className="text-center">В</div>
+    <div className="text-center">Н</div>
+    <div className="text-center">П</div>
+    <div className="text-center">ГЗ</div>
+    <div className="text-center">ГП</div>
+    <div className="text-center">+/-</div>
+    <div className="px-0.5 text-center leading-none sm:px-1">Форма</div>
   </div>
 )
 
@@ -84,36 +82,16 @@ const Stat = ({ value, className }: { value: string; className?: string }) => (
   <div className={`text-center ${className ?? ""}`}>{value}</div>
 )
 
-const DesktopStat = ({ value }: { value: string }) => (
-  <div className="hidden text-center sm:block">{value}</div>
-)
-
-const MobileRecord = ({
-  games,
-  wins,
-  draws,
-  losses,
-}: {
-  games: string
-  wins: string
-  draws: string
-  losses: string
-}) => (
-  <div className="text-center text-[0.65rem] leading-tight sm:hidden">
-    {games}-{wins}-{draws}-{losses}
-  </div>
-)
-
 const FormDots = ({
   form,
 }: {
   form: StandingsData["standings"][number]["form"]
 }) => (
-  <div className="hidden justify-center gap-1 sm:flex">
+  <div className="flex justify-center gap-1 px-0.5 py-0.5 sm:gap-1.5 sm:px-1">
     {form.map((result, index) => (
       <span
         key={`${result}-${index}`}
-        className={`size-2.5 rounded-full ${
+        className={`size-1.5 rounded-full sm:size-2.5 ${
           result === "win"
             ? "bg-green-500"
             : result === "draw"
