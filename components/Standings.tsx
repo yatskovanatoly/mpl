@@ -45,7 +45,7 @@ const Standings = ({ standings }: StandingsData) => {
                     size={40}
                     className="size-6 shrink-0 sm:size-10"
                   />
-                  <span className="min-w-0 truncate leading-tight sm:overflow-visible sm:whitespace-normal">
+                  <span className="min-w-0 leading-tight break-words">
                     {standing.team.team}
                   </span>
                 </div>
