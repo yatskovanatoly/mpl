@@ -7,7 +7,13 @@ import { StandingsData } from "@/lib/types"
 import { useRef, useState } from "react"
 
 const TABLE_GRID =
-  "grid-cols-[0.875rem_minmax(0,1fr)_repeat(8,minmax(0,1.0625rem))_minmax(2.75rem,3rem)] sm:grid-cols-[1.5rem_minmax(0,1fr)_repeat(8,1.75rem)_4rem]"
+  "grid-cols-[1.125rem_minmax(0,1fr)_9.375rem_3rem] sm:grid-cols-[2rem_minmax(0,1fr)_14.75rem_4.5rem]"
+
+const STATS_GRID =
+  "grid-cols-[repeat(8,minmax(0,1.0625rem))] sm:grid-cols-[repeat(8,1.625rem)]"
+
+const POSITION_CELL = "pr-1 text-center sm:pr-2"
+const FORM_CELL = "pl-1 text-center sm:pl-3"
 
 const Standings = ({ standings }: StandingsData) => {
   const [loading, setLoading] = useState(false)
@@ -25,11 +31,13 @@ const Standings = ({ standings }: StandingsData) => {
             {standings.map((standing, index) => (
               <div
                 key={standing.team.id || standing.team.team}
-                className={`grid ${TABLE_GRID} min-h-12 items-center gap-x-0.5 gap-y-1 px-1 py-1.5 text-[0.6875rem] tabular-nums sm:min-h-16 sm:gap-x-2 sm:gap-y-2 sm:px-4 sm:py-2 sm:text-sm ${
+                className={`grid ${TABLE_GRID} min-h-12 items-center gap-x-2 gap-y-1 px-1 py-1.5 text-[0.6875rem] tabular-nums sm:min-h-16 sm:gap-x-4 sm:gap-y-2 sm:px-4 sm:py-2 sm:text-sm ${
                   index % 2 ? "bg-[var(--row-b)]" : "bg-[var(--row-a)]"
                 }`}
               >
-                <div className="text-center font-bold">{standing.position}</div>
+                <div className={`font-bold ${POSITION_CELL}`}>
+                  {standing.position}
+                </div>
                 <div className="flex min-w-0 items-center gap-1.5 font-medium sm:gap-3">
                   <TeamLogo
                     id={standing.team.id}
@@ -41,14 +49,16 @@ const Standings = ({ standings }: StandingsData) => {
                     {standing.team.team}
                   </span>
                 </div>
-                <Stat value={standing.points} className="font-bold" />
-                <Stat value={standing.games} />
-                <Stat value={standing.wins} />
-                <Stat value={standing.draws} />
-                <Stat value={standing.losses} />
-                <Stat value={standing.goalsFor} />
-                <Stat value={standing.goalsAgainst} />
-                <Stat value={standing.goalDiff} />
+                <div className={`grid w-full ${STATS_GRID} items-center gap-x-0.5 sm:gap-x-1`}>
+                  <Stat value={standing.points} className="font-bold" />
+                  <Stat value={standing.games} />
+                  <Stat value={standing.wins} />
+                  <Stat value={standing.draws} />
+                  <Stat value={standing.losses} />
+                  <Stat value={standing.goalsFor} />
+                  <Stat value={standing.goalsAgainst} />
+                  <Stat value={standing.goalDiff} />
+                </div>
                 <FormDots form={standing.form} />
               </div>
             ))}
@@ -62,19 +72,21 @@ const Standings = ({ standings }: StandingsData) => {
 
 const Header = () => (
   <div
-    className={`grid ${TABLE_GRID} items-center gap-x-0.5 bg-[var(--panel)] px-1 py-1.5 text-[0.625rem] font-bold uppercase opacity-80 sm:gap-x-2 sm:px-4 sm:py-2 sm:text-xs`}
+    className={`grid ${TABLE_GRID} items-center gap-x-2 bg-[var(--panel)] px-1 py-1.5 text-[0.625rem] font-bold uppercase opacity-80 sm:gap-x-4 sm:px-4 sm:py-2 sm:text-xs`}
   >
-    <div />
+    <div className={POSITION_CELL} />
     <div>Команда</div>
-    <div className="text-center">О</div>
-    <div className="text-center">И</div>
-    <div className="text-center">В</div>
-    <div className="text-center">Н</div>
-    <div className="text-center">П</div>
-    <div className="text-center">ГЗ</div>
-    <div className="text-center">ГП</div>
-    <div className="text-center">+/-</div>
-    <div className="px-0.5 text-center leading-none sm:px-1">Форма</div>
+    <div className={`grid w-full ${STATS_GRID} gap-x-0.5 sm:gap-x-1`}>
+      <div className="text-center">О</div>
+      <div className="text-center">И</div>
+      <div className="text-center">В</div>
+      <div className="text-center">Н</div>
+      <div className="text-center">П</div>
+      <div className="text-center">ГЗ</div>
+      <div className="text-center">ГП</div>
+      <div className="text-center">+/-</div>
+    </div>
+    <div className={`leading-none ${FORM_CELL}`}>Форма</div>
   </div>
 )
 
@@ -87,7 +99,7 @@ const FormDots = ({
 }: {
   form: StandingsData["standings"][number]["form"]
 }) => (
-  <div className="flex justify-center gap-0.5 px-0.5 py-0.5 sm:gap-1.5 sm:px-1">
+  <div className={`flex justify-center gap-0.5 py-0.5 sm:gap-1.5 ${FORM_CELL}`}>
     {form.map((match, index) => (
       <span
         key={`${match.result}-${index}`}
