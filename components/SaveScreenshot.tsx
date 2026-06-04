@@ -111,7 +111,7 @@ const SaveScreenshot: FC<{
         : "Копировать"
 
   return (
-    <div className="grid w-full max-w-full grid-cols-1 justify-center gap-2 pt-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap">
+    <div className="grid w-full max-w-full grid-cols-1 justify-center gap-2 p-2 min-[360px]:grid-cols-2 sm:flex sm:flex-wrap sm:p-0 sm:pt-2">
       <button
         type="button"
         disabled={disabled}

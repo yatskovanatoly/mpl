@@ -38,7 +38,7 @@ export default function RootLayout({
       </head>
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh w-full flex-col items-center justify-start px-3 pb-28 sm:px-4 sm:pb-4">
+          <div className="flex min-h-dvh w-full flex-col items-center justify-start pb-28 sm:px-4 sm:pb-4">
             <Link
               href="/games"
               aria-label="Moscow Punk-rock League games"
