@@ -1,6 +1,6 @@
 import StandingsWithData from "./StandingsWithData"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 60
 
 const Page = () => <StandingsWithData />
 

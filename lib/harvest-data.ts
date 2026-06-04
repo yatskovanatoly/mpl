@@ -2,8 +2,17 @@ import axios from "axios"
 import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
 import { sanitizeTeamName } from "./sanitize-team-name"
-import { Game, RoundData, Rounds, Standing, StandingForm, StandingsData } from "./types"
+import {
+  Game,
+  RoundData,
+  Rounds,
+  Standing,
+  StandingForm,
+  StandingsData,
+} from "./types"
 import { BASE_URL, MPL_ID } from "./urls"
+
+const DATA_REVALIDATE_SECONDS = 60
 
 const fetchRoundHtml = unstable_cache(
   async (roundKey: string) => {
@@ -16,7 +25,7 @@ const fetchRoundHtml = unstable_cache(
   },
   ["mpl-round-html"],
   {
-    revalidate: 60,
+    revalidate: DATA_REVALIDATE_SECONDS,
     tags: ["mpl-round-html"],
   },
 )
@@ -38,7 +47,7 @@ const fetchStandingsHtml = unstable_cache(
   },
   ["mpl-standings-html"],
   {
-    revalidate: 60,
+    revalidate: DATA_REVALIDATE_SECONDS,
     tags: ["mpl-standings-html"],
   },
 )

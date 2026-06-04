@@ -27,7 +27,7 @@ export default function Round({
           ref={captureRef}
           className="flex w-full max-w-[40rem] min-w-0 flex-col items-stretch"
         >
-          <div className="flex w-full min-w-0 flex-col items-center justify-center gap-1 bg-[var(--panel)] px-2 py-2 sm:p-4">
+          <div className="flex w-full min-w-0 flex-col items-center justify-center gap-1 bg-[var(--panel)] px-1 py-1.5 sm:gap-2 sm:px-4 sm:py-2">
             <RoundSelect
               rounds={rounds.rounds}
               currentRound={rounds.currentRound}

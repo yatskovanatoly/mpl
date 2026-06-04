@@ -7,7 +7,13 @@ import { type ReactNode, useCallback, useRef } from "react"
 const SWIPE_THRESHOLD_PX = 60
 const MOBILE_MAX_WIDTH_PX = 640
 
-const SwipeNavigation = ({ children }: { children: ReactNode }) => {
+const SwipeNavigation = ({
+  children,
+  className,
+}: {
+  children: ReactNode
+  className?: string
+}) => {
   const router = useRouter()
   const pathname = usePathname()
   const touchStart = useRef<{ x: number; y: number } | null>(null)
@@ -50,7 +56,7 @@ const SwipeNavigation = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className="w-full min-w-0 touch-pan-y"
+      className={`w-full min-w-0 touch-pan-y ${className ?? ""}`}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >

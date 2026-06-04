@@ -1,6 +1,6 @@
 import RoundWithData from "./RoundWithData"
 
-export const dynamic = "force-dynamic"
+export const revalidate = 60
 
 const Page = () => <RoundWithData />
 

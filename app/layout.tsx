@@ -1,7 +1,13 @@
 import ThemeConfigurator from "@/components/ThemeConfigurator"
 import ThemeToggle from "@/components/ThemeToggle"
 import NavigationTabs from "@/components/NavigationTabs"
+import RouteSkeleton from "@/components/RouteSkeleton"
 import SwipeNavigation from "@/components/SwipeNavigation"
+import {
+  FIXED_TOP_CLASS,
+  HEADER_SPACER_CLASS,
+  TABS_CONTENT_GAP_CLASS,
+} from "@/lib/layout-spacing"
 import {
   CUSTOM_THEME_STORAGE_KEY,
   customThemeFields,
@@ -13,6 +19,7 @@ import { Roboto } from "next/font/google"
 import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
+import { Suspense } from "react"
 import "./globals.css"
 
 export default function RootLayout({
@@ -31,26 +38,30 @@ export default function RootLayout({
       </head>
       <body className={`${roboto.className} antialiased`}>
         <ThemeProvider attribute="class" enableSystem defaultTheme="system">
-          <div className="flex min-h-dvh w-full flex-col items-center justify-center px-3 pt-16 pb-28 sm:px-4 sm:pt-16 sm:pb-4">
+          <div className="flex min-h-dvh w-full flex-col items-center justify-start px-3 pb-28 sm:px-4 sm:pb-4">
             <Link
               href="/games"
               aria-label="Moscow Punk-rock League games"
-              className="fixed top-2 left-2 z-40 size-7 sm:top-4 sm:left-4 sm:size-10"
+              className={`fixed left-2 z-40 size-7 sm:left-4 sm:size-10 ${FIXED_TOP_CLASS}`}
             >
               <Image
                 src="/mpl.png"
                 alt="Moscow Punk-rock League"
                 width={40}
                 height={40}
+                priority
                 className="h-full w-full object-contain"
               />
             </Link>
             <NavigationTabs />
-            <div className="fixed top-2 right-3 z-40 sm:top-4 sm:right-6">
+            <div className={`fixed right-3 z-40 sm:right-6 ${FIXED_TOP_CLASS}`}>
               <ThemeToggle />
             </div>
             <ThemeConfigurator />
-            <SwipeNavigation>{children}</SwipeNavigation>
+            <div className={HEADER_SPACER_CLASS} aria-hidden />
+            <SwipeNavigation className={TABS_CONTENT_GAP_CLASS}>
+              <Suspense fallback={<RouteSkeleton />}>{children}</Suspense>
+            </SwipeNavigation>
           </div>
         </ThemeProvider>
       </body>
