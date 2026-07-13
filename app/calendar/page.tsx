@@ -1,7 +1,5 @@
-import CalendarWithData from "./CalendarWithData"
+import { redirect } from "next/navigation"
 
-export const revalidate = 60
-
-const Page = () => <CalendarWithData />
+const Page = () => redirect("/calendar/1")
 
 export default Page

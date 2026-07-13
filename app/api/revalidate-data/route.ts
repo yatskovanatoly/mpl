@@ -17,6 +17,7 @@ export async function POST() {
   revalidatePath("/games/[round]", "page")
   revalidatePath("/table")
   revalidatePath("/calendar")
+  revalidatePath("/calendar/[leg]", "page")
 
   return Response.json({ revalidated: true })
 }

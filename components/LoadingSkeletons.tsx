@@ -1,8 +1,12 @@
-import { CALENDAR_CARD, CALENDAR_LAYOUT } from "@/lib/calendar-layout"
+import {
+  CALENDAR_CARD,
+  CALENDAR_LAYOUT,
+  CALENDAR_LEG_HEADER,
+} from "@/lib/calendar-layout"
 
 const SKELETON_GAMES_COUNT = 7
 const SKELETON_STANDINGS_COUNT = 14
-const SKELETON_CALENDAR_ROUNDS = 14
+const SKELETON_CALENDAR_ROUNDS = 7
 const SKELETON_CALENDAR_GAMES = 7
 
 const TABLE_GRID =
@@ -51,8 +55,11 @@ export const GamesSkeleton = () => (
 )
 
 export const CalendarSkeleton = () => (
-  <div className="flex w-full min-w-0 flex-col" aria-busy="true">
-    <div className="flex w-full justify-center px-1 sm:px-2">
+  <div className="flex w-full min-w-0 flex-col lg:h-[calc(100dvh-5rem)] lg:overflow-hidden" aria-busy="true">
+    <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-1 sm:px-2 lg:px-3">
+      <div className={CALENDAR_LEG_HEADER}>
+        <SkeletonBlock className="h-7 w-[8.5rem] sm:w-[9rem]" />
+      </div>
       <div className={CALENDAR_LAYOUT}>
         {Array.from({ length: SKELETON_CALENDAR_ROUNDS }, (_, roundIndex) => (
           <div
