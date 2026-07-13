@@ -49,6 +49,16 @@ export type StandingsData = {
   standings: Standing[]
 }
 
+export type CalendarRound = {
+  round: string
+  date: string
+  games: Game[]
+}
+
+export type CalendarData = {
+  rounds: CalendarRound[]
+}
+
 export type ParamsWithRound = {
   params: Promise<{ round: string }>
 }

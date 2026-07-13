@@ -1,5 +1,9 @@
+import { CALENDAR_CARD, CALENDAR_LAYOUT } from "@/lib/calendar-layout"
+
 const SKELETON_GAMES_COUNT = 7
 const SKELETON_STANDINGS_COUNT = 14
+const SKELETON_CALENDAR_ROUNDS = 14
+const SKELETON_CALENDAR_GAMES = 7
 
 const TABLE_GRID =
   "grid-cols-[1.125rem_minmax(0,1fr)_9.375rem_3rem] sm:grid-cols-[2rem_minmax(0,1fr)_14.75rem_4.5rem]"
@@ -39,6 +43,44 @@ export const GamesSkeleton = () => (
               <SkeletonBlock className="h-4 w-24 max-sm:w-16 sm:h-5 sm:w-36" />
               <SkeletonBlock className="size-12 max-sm:size-8" />
             </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+)
+
+export const CalendarSkeleton = () => (
+  <div className="flex w-full min-w-0 flex-col" aria-busy="true">
+    <div className="flex w-full justify-center px-1 sm:px-2">
+      <div className={CALENDAR_LAYOUT}>
+        {Array.from({ length: SKELETON_CALENDAR_ROUNDS }, (_, roundIndex) => (
+          <div
+            key={roundIndex}
+            className={`flex min-w-0 flex-col overflow-hidden rounded-sm border border-[var(--foreground)]/10 bg-[var(--row-a)] ${CALENDAR_CARD}`}
+          >
+            <div className="flex flex-col items-center gap-1 bg-[var(--panel)] px-1.5 py-1">
+              <SkeletonBlock className="h-3 w-10 sm:h-3.5 sm:w-12" />
+              <SkeletonBlock className="h-2.5 w-16 sm:w-20" />
+            </div>
+            {Array.from({ length: SKELETON_CALENDAR_GAMES }, (_, index) => (
+              <div
+                key={index}
+                className={`grid grid-cols-[2fr_1fr_2fr] items-center gap-x-1 px-1.5 py-1 sm:px-2 ${
+                  index % 2 ? "bg-[var(--row-b)]" : "bg-[var(--row-a)]"
+                }`}
+              >
+                <div className="flex items-center justify-between gap-1">
+                  <SkeletonBlock className="h-2.5 w-full" />
+                  <SkeletonBlock className="size-3 shrink-0 sm:size-4" />
+                </div>
+                <SkeletonBlock className="mx-auto h-2.5 w-6" />
+                <div className="flex flex-row-reverse items-center justify-between gap-1">
+                  <SkeletonBlock className="h-2.5 w-full" />
+                  <SkeletonBlock className="size-3 shrink-0 sm:size-4" />
+                </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>

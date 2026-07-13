@@ -24,7 +24,7 @@ const Standings = ({ standings }: StandingsData) => {
       <div className="flex w-full min-w-0 flex-col items-center">
         <div
           ref={captureRef}
-          className="flex w-full max-w-[40rem] min-w-0 flex-col items-stretch"
+          className="flex w-full max-w-[40rem] min-w-0 flex-col items-stretch bg-[var(--background)] text-[var(--foreground)]"
         >
           <div className="flex w-full flex-col">
             <Header />

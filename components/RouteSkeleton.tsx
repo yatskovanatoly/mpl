@@ -1,6 +1,10 @@
 "use client"
 
-import { GamesSkeleton, StandingsSkeleton } from "@/components/LoadingSkeletons"
+import {
+  CalendarSkeleton,
+  GamesSkeleton,
+  StandingsSkeleton,
+} from "@/components/LoadingSkeletons"
 import { usePathname } from "next/navigation"
 
 const RouteSkeleton = () => {
@@ -8,6 +12,10 @@ const RouteSkeleton = () => {
 
   if (pathname.startsWith("/table")) {
     return <StandingsSkeleton />
+  }
+
+  if (pathname.startsWith("/calendar")) {
+    return <CalendarSkeleton />
   }
 
   return <GamesSkeleton />

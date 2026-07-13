@@ -1,6 +1,8 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
+import { REQUEST_HEADERS } from "./request-headers"
+import { resolveSeasonId, seasonQuery } from "./resolve-season"
 import { sanitizeTeamName } from "./sanitize-team-name"
 import {
   Game,
@@ -16,9 +18,23 @@ const DATA_REVALIDATE_SECONDS = 60
 
 const fetchRoundHtml = unstable_cache(
   async (roundKey: string) => {
+    const seasonId = await resolveSeasonId()
+    const params = new URLSearchParams()
+
+    if (roundKey !== "current") {
+      params.set("round", roundKey)
+    }
+
+    const season = seasonQuery(seasonId)
+    if (season) {
+      params.set("season", seasonId!)
+    }
+
+    const query = params.toString()
     const response = await axios.get(
       `https://${BASE_URL}/championships/${MPL_ID}/games` +
-        `${roundKey === "current" ? "" : `?round=${roundKey}`}`,
+        (query ? `?${query}` : ""),
+      { headers: REQUEST_HEADERS },
     )
 
     return response.data as string
@@ -39,8 +55,12 @@ const getCheerio = async (round?: number): Promise<cheerio.CheerioAPI> => {
 
 const fetchStandingsHtml = unstable_cache(
   async () => {
+    const seasonId = await resolveSeasonId()
+    const season = seasonQuery(seasonId)
     const response = await axios.get(
-      `https://${BASE_URL}/championships/${MPL_ID}/show_table`,
+      `https://${BASE_URL}/championships/${MPL_ID}/show_table` +
+        (season ? `?${season}` : ""),
+      { headers: REQUEST_HEADERS },
     )
 
     return response.data as string

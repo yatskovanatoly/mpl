@@ -45,7 +45,7 @@ export const getAllRounds = async (): Promise<Round[]> => {
           const home = getText(".home")
           const away = getText(".away")
           const homeId = El.find(".home").attr("name") || ""
-          const awayId = El.find(".home").attr("name") || ""
+          const awayId = El.find(".away").attr("name") || ""
 
           const game: Game = {
             time,

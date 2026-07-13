@@ -15,6 +15,36 @@ import {
 const COPY_ATTEMPTS = 3
 const RETRY_DELAY_MS = 300
 
+const getThemeColor = (variable: string, fallback: string) => {
+  const value = getComputedStyle(document.documentElement)
+    .getPropertyValue(variable)
+    .trim()
+
+  return value || fallback
+}
+
+const getCaptureOptions = () => {
+  const backgroundColor = getThemeColor(
+    "--background",
+    document.documentElement.classList.contains("dark") ? "#171717" : "#ffffff",
+  )
+  const color = getThemeColor(
+    "--foreground",
+    document.documentElement.classList.contains("dark") ? "#ffffff" : "#171717",
+  )
+
+  return {
+    cacheBust: true,
+    includeQueryParams: true,
+    pixelRatio: 3,
+    backgroundColor,
+    style: {
+      backgroundColor,
+      color,
+    },
+  } as const
+}
+
 const SaveScreenshot: FC<{
   targetRef: RefObject<HTMLDivElement | null>
   filename: string
@@ -36,11 +66,7 @@ const SaveScreenshot: FC<{
 
   const capture = useCallback(async () => {
     if (!targetRef.current) return null
-    return toBlob(targetRef.current, {
-      cacheBust: true,
-      includeQueryParams: true,
-      pixelRatio: 3,
-    })
+    return toBlob(targetRef.current, getCaptureOptions())
   }, [targetRef])
 
   const download = useCallback(async () => {
