@@ -38,7 +38,7 @@ const Calendar = ({
           ) : (
             <div
               ref={captureRef}
-              className={`${CALENDAR_LAYOUT} bg-[var(--background)]`}
+              className={`${CALENDAR_LAYOUT} min-h-0 flex-1 bg-[var(--background)]`}
             >
               {rounds.map(({ round, date, games }) => (
                 <CalendarRoundCard

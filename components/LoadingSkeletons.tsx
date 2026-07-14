@@ -6,7 +6,7 @@ import {
 
 const SKELETON_GAMES_COUNT = 7
 const SKELETON_STANDINGS_COUNT = 14
-const SKELETON_CALENDAR_ROUNDS = 7
+const SKELETON_CALENDAR_ROUNDS = 13
 const SKELETON_CALENDAR_GAMES = 7
 
 const TABLE_GRID =
@@ -55,16 +55,16 @@ export const GamesSkeleton = () => (
 )
 
 export const CalendarSkeleton = () => (
-  <div className="flex w-full min-w-0 flex-col lg:h-[calc(100dvh-5rem)] lg:overflow-hidden" aria-busy="true">
+  <div className="flex w-full min-w-0 flex-col md:h-[calc(100dvh-5.75rem)] md:overflow-hidden" aria-busy="true">
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-1 sm:px-2 lg:px-3">
       <div className={CALENDAR_LEG_HEADER}>
         <SkeletonBlock className="h-7 w-[8.5rem] sm:w-[9rem]" />
       </div>
-      <div className={CALENDAR_LAYOUT}>
+      <div className={`${CALENDAR_LAYOUT} min-h-0 flex-1`}>
         {Array.from({ length: SKELETON_CALENDAR_ROUNDS }, (_, roundIndex) => (
           <div
             key={roundIndex}
-            className={`flex min-w-0 flex-col overflow-hidden rounded-sm border border-[var(--foreground)]/10 bg-[var(--row-a)] ${CALENDAR_CARD}`}
+            className={`flex min-w-0 shrink-0 flex-col overflow-hidden rounded-sm border border-[var(--foreground)]/10 bg-[var(--row-a)] ${CALENDAR_CARD}`}
           >
             <div className="flex flex-col items-center gap-1 bg-[var(--panel)] px-1.5 py-1">
               <SkeletonBlock className="h-3 w-10 sm:h-3.5 sm:w-12" />
