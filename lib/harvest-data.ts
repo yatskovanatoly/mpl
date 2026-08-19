@@ -3,6 +3,7 @@ import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
 import { REQUEST_HEADERS } from "./request-headers"
 import { resolveSeasonId, seasonQuery } from "./resolve-season"
+import { sanitizeScore } from "./sanitize-score"
 import { sanitizeTeamName } from "./sanitize-team-name"
 import {
   Game,
@@ -105,10 +106,11 @@ const getData = async (round?: number): Promise<RoundData> => {
             logo: imgUrl,
           }
         } else if (className === "score") {
-          game.score = $child.text().trim()
+          game.score = sanitizeScore($child.text())
         }
-        game.time = !game.score ? time : undefined
       })
+      // Unplayed games show their kick-off time instead of a score.
+      game.time = game.score ? undefined : time
       games.push(game as Game)
     })
   } catch (e) {

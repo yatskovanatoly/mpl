@@ -49,7 +49,11 @@ const CalendarRoundCard: FC<{
                 className={`shrink-0 ${LOGO_SIZE}`}
               />
             </div>
-            <span className="shrink-0 px-0.5 text-center font-bold tabular-nums">
+            <span
+              className={`shrink-0 px-0.5 text-center tabular-nums ${
+                game.score ? "font-bold" : "muted"
+              }`}
+            >
               {game.score || game.time || "—"}
             </span>
             <div className="flex min-w-0 flex-row-reverse items-center justify-between gap-0.5 sm:gap-1">

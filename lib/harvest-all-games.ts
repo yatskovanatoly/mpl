@@ -1,5 +1,6 @@
 import axios from "axios"
 import * as cheerio from "cheerio"
+import { sanitizeScore } from "./sanitize-score"
 import { sanitizeTeamName } from "./sanitize-team-name"
 import { Game, Round } from "./types"
 import { MPL_ALL_GAMES } from "./urls"
@@ -41,7 +42,7 @@ export const getAllRounds = async (): Promise<Round[]> => {
             El.find(selector).text().replace(/\s+/g, " ").trim()
 
           const time = getText(".date")
-          const score = getText(".score")
+          const score = sanitizeScore(getText(".score"))
           const home = getText(".home")
           const away = getText(".away")
           const homeId = El.find(".home").attr("name") || ""

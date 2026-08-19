@@ -3,6 +3,7 @@ import * as cheerio from "cheerio"
 import { unstable_cache } from "next/cache"
 import { REQUEST_HEADERS } from "./request-headers"
 import { resolveSeasonId } from "./resolve-season"
+import { sanitizeScore } from "./sanitize-score"
 import { sanitizeTeamName } from "./sanitize-team-name"
 import { CalendarData, Game } from "./types"
 import { BASE_URL, MPL_ID } from "./urls"
@@ -51,7 +52,7 @@ export const getCalendarData = unstable_cache(
         .each((_, row) => {
           const $row = $(row)
           const time = $row.find(".date").text().replace(/\s+/g, " ").trim()
-          const score = $row.find(".score").text().replace(/\s+/g, " ").trim()
+          const score = sanitizeScore($row.find(".score").text())
           const homeCell = $row.find(".home")
           const awayCell = $row.find(".away")
 
@@ -94,7 +95,7 @@ export const getCalendarData = unstable_cache(
           .each((_, row) => {
             const $row = $(row)
             const time = $row.find(".date").text().replace(/\s+/g, " ").trim()
-            const score = $row.find(".score").text().replace(/\s+/g, " ").trim()
+            const score = sanitizeScore($row.find(".score").text())
             const homeCell = $row.find(".home")
             const awayCell = $row.find(".away")
 

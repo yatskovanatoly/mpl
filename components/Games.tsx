@@ -18,7 +18,7 @@ const ResultItem = (result: Game, i: number) => {
     >
       <Team {...home} side="home" />
       <div className="text-md self-center transition-[font-size] sm:text-2xl">
-        {score ? <Score score={score ?? time} /> : <Time time={time} />}
+        {score ? <Score score={score} /> : <Time time={time} />}
       </div>
       <Team {...away} side="away" />
     </div>
