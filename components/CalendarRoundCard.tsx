@@ -7,7 +7,7 @@ import { CSSProperties, FC } from "react"
 // Card text scales with the card itself so cards of any size stay filled.
 const TITLE_TEXT = "text-[clamp(0.6875rem,5.5cqw,1.125rem)]"
 const DATE_TEXT = "text-[clamp(0.5625rem,4cqw,0.875rem)]"
-const GAME_TEXT = "text-[clamp(0.5625rem,4.4cqw,1rem)]"
+const GAME_TEXT = "text-[clamp(0.5625rem,4.4cqw,0.875rem)]"
 const LOGO_SIZE = "size-[clamp(0.75rem,6cqw,1.5rem)]"
 
 const CalendarRoundCard: FC<{
@@ -34,12 +34,12 @@ const CalendarRoundCard: FC<{
         {games.map((game, index) => (
           <li
             key={`${game.home.team}-${game.away.team}-${index}`}
-            className={`grid min-h-0 flex-1 grid-cols-[2fr_1fr_2fr] items-center gap-x-1 px-1.5 py-px leading-tight sm:gap-x-1.5 sm:px-2 lg:gap-x-2 ${GAME_TEXT} ${
+            className={`grid flex-1 grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-1 px-1.5 py-px leading-tight sm:gap-x-1.5 sm:px-2 lg:gap-x-2 ${GAME_TEXT} ${
               index % 2 ? "bg-[var(--row-b)]" : "bg-[var(--row-a)]"
             }`}
           >
             <div className="flex min-w-0 items-center justify-between gap-0.5 sm:gap-1">
-              <span className="min-w-0 truncate font-medium">
+              <span className="min-w-0 font-medium break-words">
                 {game.home.team}
               </span>
               <TeamLogo
@@ -57,7 +57,7 @@ const CalendarRoundCard: FC<{
               {game.score || game.time || "—"}
             </span>
             <div className="flex min-w-0 flex-row-reverse items-center justify-between gap-0.5 sm:gap-1">
-              <span className="min-w-0 truncate text-right font-medium">
+              <span className="min-w-0 text-right font-medium break-words">
                 {game.away.team}
               </span>
               <TeamLogo

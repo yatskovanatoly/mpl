@@ -24,12 +24,13 @@ export type CalendarGrid = {
   fillHeight: boolean
 }
 
-/** Narrowest card that still shows a readable team name. */
-const MIN_CARD_WIDTH = 150
+/** Narrowest card that still fits two team names side by side. */
+const MIN_CARD_WIDTH = 175
 /** Comfortable card proportions, used as the target shape of a card. */
 const TARGET_CARD_WIDTH = 190
 const CARD_HEADER_HEIGHT = 30
-const CARD_GAME_HEIGHT = 16
+// Two lines, so a wrapped team name still fits the row.
+const CARD_GAME_HEIGHT = 24
 
 const EMPTY_CELL_WEIGHT = 1
 const NARROW_CARD_WEIGHT = 4
