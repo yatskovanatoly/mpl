@@ -3,23 +3,28 @@
 import CalendarLegSelect from "@/components/CalendarLegSelect"
 import CalendarRoundCard from "@/components/CalendarRoundCard"
 import SaveScreenshot from "@/components/SaveScreenshot"
+import useCalendarGrid from "@/hooks/useCalendarGrid"
 import {
   CALENDAR_CARD,
   CALENDAR_LAYOUT,
   CALENDAR_LEG_HEADER,
   CALENDAR_PAGE,
+  calendarCardStyle,
+  calendarGridStyle,
 } from "@/lib/calendar-layout"
 import { CalendarLeg } from "@/lib/calendar-legs"
 import RoundContext from "@/lib/round-context"
 import { CalendarData } from "@/lib/types"
 import { useRef, useState } from "react"
 
-const Calendar = ({
-  rounds,
-  leg,
-}: CalendarData & { leg: CalendarLeg }) => {
+const Calendar = ({ rounds, leg }: CalendarData & { leg: CalendarLeg }) => {
   const [loading, setLoading] = useState(false)
   const captureRef = useRef<HTMLDivElement>(null)
+  const maxGames = rounds.reduce(
+    (max, { games }) => Math.max(max, games.length),
+    0,
+  )
+  const grid = useCalendarGrid(captureRef, rounds.length, maxGames)
 
   return (
     <RoundContext.Provider value={{ loading, setLoading }}>
@@ -38,12 +43,14 @@ const Calendar = ({
           ) : (
             <div
               ref={captureRef}
-              className={`${CALENDAR_LAYOUT} min-h-0 flex-1 bg-[var(--background)]`}
+              className={`${CALENDAR_LAYOUT} bg-[var(--background)]`}
+              style={calendarGridStyle(grid)}
             >
-              {rounds.map(({ round, date, games }) => (
+              {rounds.map(({ round, date, games }, index) => (
                 <CalendarRoundCard
                   key={round}
                   className={CALENDAR_CARD}
+                  style={calendarCardStyle(grid, index, rounds.length)}
                   round={round}
                   date={date}
                   games={games}
