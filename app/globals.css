@@ -3,6 +3,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --muted: #78716c;
   --panel: #e5e5e5;
   --row-a: #d6d3d1;
   --row-b: #e5e5e5;
@@ -11,6 +12,7 @@
 
 .dark {
   --foreground: #ffffff;
+  --muted: #a8a29e;
   --background: #171717;
   --panel: #292524;
   --row-a: #78716c;
@@ -27,8 +29,9 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* Secondary text: dates, kick-off times, inactive controls. */
 @utility muted {
-  opacity: 33%;
+  color: var(--muted);
 }
 
 body {

@@ -3,6 +3,7 @@ export const CUSTOM_THEME_STORAGE_KEY = "mpl-custom-theme"
 export const customThemeFields = [
   { label: "Фон", variable: "--background" },
   { label: "Текст", variable: "--foreground" },
+  { label: "Второстепенный текст", variable: "--muted" },
   { label: "Шапка", variable: "--panel" },
   { label: "Строка A", variable: "--row-a" },
   { label: "Строка B", variable: "--row-b" },

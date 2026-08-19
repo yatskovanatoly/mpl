@@ -21,7 +21,7 @@ export default function Round({
     <RoundContext.Provider value={{ loading, setLoading }}>
       <div
         aria-disabled={loading}
-        className={`${loading && "muted pointer-events-none"} flex w-full min-w-0 flex-col items-center`}
+        className={`${loading && "pointer-events-none opacity-[0.33]"} flex w-full min-w-0 flex-col items-center`}
       >
         <div
           ref={captureRef}

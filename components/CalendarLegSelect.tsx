@@ -14,7 +14,7 @@ const NavButton: FC<{
     type="button"
     aria-label={label}
     onClick={onClick}
-    className="flex size-7 items-center justify-center rounded bg-[var(--button-bg)] text-base font-bold leading-none transition hover:opacity-80"
+    className="flex size-7 cursor-pointer items-center justify-center rounded text-base leading-none font-bold transition-colors hover:bg-[var(--button-bg)]"
   >
     {children}
   </button>
@@ -32,23 +32,23 @@ const CalendarLegSelect: FC<{ leg: CalendarLeg }> = ({ leg }) => {
   return (
     <div className="flex w-full justify-center">
       <div className="grid grid-cols-[1.75rem_1fr_1.75rem] items-center sm:grid-cols-[2rem_1fr_2rem]">
-      <div className="flex justify-center">
-        {leg === 2 ? (
-          <NavButton label="Круг 1" onClick={() => goTo(1)}>
-            ‹
-          </NavButton>
-        ) : null}
-      </div>
-      <span className="text-center text-xs font-medium sm:text-sm">
-        Круг {leg}
-      </span>
-      <div className="flex justify-center">
-        {leg === 1 ? (
-          <NavButton label="Круг 2" onClick={() => goTo(2)}>
-            ›
-          </NavButton>
-        ) : null}
-      </div>
+        <div className="flex justify-center">
+          {leg === 2 ? (
+            <NavButton label="Круг 1" onClick={() => goTo(1)}>
+              ‹
+            </NavButton>
+          ) : null}
+        </div>
+        <span className="text-center text-xs font-medium sm:text-sm">
+          Круг {leg}
+        </span>
+        <div className="flex justify-center">
+          {leg === 1 ? (
+            <NavButton label="Круг 2" onClick={() => goTo(2)}>
+              ›
+            </NavButton>
+          ) : null}
+        </div>
       </div>
     </div>
   )
