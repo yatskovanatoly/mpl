@@ -15,6 +15,8 @@ import {
 const COPY_ATTEMPTS = 3
 const RETRY_DELAY_MS = 300
 
+let captureWarmedUp = false
+
 const getThemeColor = (variable: string, fallback: string) => {
   const value = getComputedStyle(document.documentElement)
     .getPropertyValue(variable)
@@ -66,7 +68,15 @@ const SaveScreenshot: FC<{
 
   const capture = useCallback(async () => {
     if (!targetRef.current) return null
-    return toBlob(targetRef.current, getCaptureOptions())
+    const options = getCaptureOptions()
+    // WebKit (Safari, every iOS browser) draws the first capture of a page
+    // load before the embedded logos have decoded, so they come out blank.
+    // A throwaway pass warms it up; later captures have every logo.
+    if (!captureWarmedUp) {
+      await toBlob(targetRef.current, options)
+      captureWarmedUp = true
+    }
+    return toBlob(targetRef.current, options)
   }, [targetRef])
 
   const download = useCallback(async () => {
