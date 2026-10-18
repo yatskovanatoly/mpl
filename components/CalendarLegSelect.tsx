@@ -1,24 +1,10 @@
 "use client"
 
+import NavButton from "@/components/NavButton"
 import { CalendarLeg } from "@/lib/calendar-legs"
 import RoundContext from "@/lib/round-context"
 import { useRouter } from "next/navigation"
 import { FC, useContext } from "react"
-
-const NavButton: FC<{
-  label: string
-  onClick: () => void
-  children: string
-}> = ({ label, onClick, children }) => (
-  <button
-    type="button"
-    aria-label={label}
-    onClick={onClick}
-    className="flex size-7 cursor-pointer items-center justify-center rounded text-base leading-none font-bold transition-colors hover:bg-[var(--button-bg)]"
-  >
-    {children}
-  </button>
-)
 
 const CalendarLegSelect: FC<{ leg: CalendarLeg }> = ({ leg }) => {
   const { setLoading } = useContext(RoundContext)
