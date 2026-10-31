@@ -73,9 +73,31 @@ const fetchStandingsHtml = unstable_cache(
   },
 )
 
+const EDIT_LABEL = /^\s*(изменить|редактировать|edit)\s*$/i
+
+// League admins get "изменить" links (and sometimes a whole column of them)
+// in the table markup. Strip them so they never leak into team names or
+// shift column indices.
+const stripAdminControls = ($: cheerio.CheerioAPI) => {
+  $("td, th")
+    .filter((_, el) => EDIT_LABEL.test($(el).text()))
+    .remove()
+
+  $("a, button")
+    .filter((_, el) => {
+      const $el = $(el)
+      const href = $el.attr("href") ?? ""
+
+      return EDIT_LABEL.test($el.text()) || /\/edit(\b|$)/.test(href)
+    })
+    .remove()
+}
+
 const getStandingsCheerio = async (): Promise<cheerio.CheerioAPI> => {
   const html = await fetchStandingsHtml()
   const $ = cheerio.load(html)
+
+  stripAdminControls($)
 
   return $
 }
@@ -160,7 +182,10 @@ export const getStandings = async (): Promise<StandingsData> => {
 
       const cellText = (index: number) => $(cells[index]).text().trim()
       const teamCell = $(cells[1])
-      const teamLink = teamCell.find("a").first()
+      const teamLink = teamCell
+        .find("a")
+        .filter((_, a) => /^\/clubs\/\d+\/?$/.test($(a).attr("href") ?? ""))
+        .first()
       const href = teamLink.attr("href") ?? ""
       const id = href.split("/").filter(Boolean).at(-1) ?? ""
       const logo = teamCell
