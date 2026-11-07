@@ -19,7 +19,7 @@ const Page = async ({
     ? requestedSeason
     : seasons[0]
 
-  return <CalendarWithData leg={leg} season={season} seasons={seasons} />
+  return <CalendarWithData leg={leg} season={season} />
 }
 
 export default Page

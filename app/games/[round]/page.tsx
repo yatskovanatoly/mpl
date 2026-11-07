@@ -20,7 +20,7 @@ const Page = async ({
     ? requestedSeason
     : seasons[0]
 
-  return <RoundWithData round={roundNum} season={season} seasons={seasons} />
+  return <RoundWithData round={roundNum} season={season} />
 }
 
 export default Page

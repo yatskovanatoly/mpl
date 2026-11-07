@@ -15,7 +15,7 @@ const Page = async ({
   const season = seasons.includes(requestedSeason ?? "")
     ? requestedSeason
     : seasons[0]
-  return <RoundWithData season={season} seasons={seasons} />
+  return <RoundWithData season={season} />
 }
 
 export default Page
