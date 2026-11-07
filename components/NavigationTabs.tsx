@@ -2,11 +2,12 @@
 
 import { FIXED_TOP_CLASS } from "@/lib/layout-spacing"
 import { navigationTabs } from "@/lib/navigation-tabs"
+import SeasonSelect from "@/components/SeasonSelect"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { MouseEvent, useEffect, useState, useTransition } from "react"
+import { MouseEvent, Suspense, useEffect, useState, useTransition } from "react"
 
-const NavigationTabs = () => {
+const NavigationTabs = ({ seasons }: { seasons: string[] }) => {
   const pathname = usePathname()
   const router = useRouter()
   const [pendingHref, setPendingHref] = useState<string | null>(null)
@@ -71,9 +72,12 @@ const NavigationTabs = () => {
   return (
     <div className={`fixed left-1/2 z-40 -translate-x-1/2 ${FIXED_TOP_CLASS}`}>
       <nav
-        className="flex rounded bg-[var(--button-bg)] p-1 text-xs shadow-sm sm:text-sm"
+        className="flex items-center gap-1 rounded bg-[var(--button-bg)] p-1 text-xs shadow-sm sm:gap-2 sm:text-sm"
         aria-busy={updating ? "true" : undefined}
       >
+        <Suspense fallback={null}>
+          <SeasonSelect seasons={seasons} />
+        </Suspense>
         {navigationTabs.map((tab) => {
           const active = pathname.startsWith(tab.activePath)
           const pending = pendingHref === tab.href

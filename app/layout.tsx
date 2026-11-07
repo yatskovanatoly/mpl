@@ -16,17 +16,19 @@ import {
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { Roboto } from "next/font/google"
+import { getSeasons } from "@/lib/supabase-data"
 import Image from "next/image"
 import Link from "next/link"
 import Script from "next/script"
 import { Suspense } from "react"
 import "./globals.css"
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const seasons = await getSeasons()
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -53,7 +55,7 @@ export default function RootLayout({
                 className="h-full w-full object-contain"
               />
             </Link>
-            <NavigationTabs />
+            <NavigationTabs seasons={seasons} />
             <div className={`fixed right-3 z-40 sm:right-6 ${FIXED_TOP_CLASS}`}>
               <ThemeToggle />
             </div>

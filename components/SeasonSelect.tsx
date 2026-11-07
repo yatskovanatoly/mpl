@@ -3,17 +3,12 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, useTransition } from "react"
 
-const SeasonSelect = ({
-  seasons,
-  selected,
-}: {
-  seasons: string[]
-  selected: string
-}) => {
+const SeasonSelect = ({ seasons }: { seasons: string[] }) => {
   const pathname = usePathname()
   const searchParams = useSearchParams()
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
+  const selected = searchParams.get("season") ?? seasons[0] ?? ""
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -24,22 +19,27 @@ const SeasonSelect = ({
   if (seasons.length < 2) return null
 
   return (
-    <label className="flex items-center justify-center gap-2 py-1 text-xs sm:text-sm">
-      <span>Сезон:</span>
+    <label className="flex items-center">
       <select
         value={selected}
+        aria-label="Выбрать сезон"
         onChange={handleChange}
         disabled={isPending}
-        className="max-w-[15rem] rounded bg-[var(--button-bg)] px-2 py-1"
+        className="max-w-[8.5rem] cursor-pointer rounded bg-[var(--button-bg)] px-2 py-1 text-xs sm:max-w-[10rem] sm:text-sm"
       >
         {seasons.map((season) => (
           <option key={season} value={season}>
-            {season}
+            {formatSeason(season)}
           </option>
         ))}
       </select>
     </label>
   )
+}
+
+const formatSeason = (season: string) => {
+  const match = season.match(/^\d{2}-(\d{4}),\s*\d{2}-(\d{4})$/)
+  return match ? `${match[1]}/${match[2].slice(-2)}` : season
 }
 
 export default SeasonSelect
