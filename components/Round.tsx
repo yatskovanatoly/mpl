@@ -13,20 +13,24 @@ export default function Round({
   rounds,
   games,
   season,
+  selectedRound,
 }: {
   rounds: Rounds
   games: RoundData
   season?: string
+  selectedRound?: number
 }) {
   const [loading, setLoading] = useState(false)
   const captureRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
-  const current = Number(rounds.currentRound)
-  // The ruler lists several rounds around the current one, so its neighbours
-  // are present whenever they exist.
-  const hasRound = (round: number) => rounds.rounds.includes(String(round))
-  const prevRound = hasRound(current - 1) ? current - 1 : null
-  const nextRound = hasRound(current + 1) ? current + 1 : null
+  const displayedRound = selectedRound ?? Number(rounds.currentRound)
+  const displayedIndex = rounds.rounds.indexOf(String(displayedRound))
+  const prevRound =
+    displayedIndex > 0 ? Number(rounds.rounds[displayedIndex - 1]) : null
+  const nextRound =
+    displayedIndex >= 0 && displayedIndex < rounds.rounds.length - 1
+      ? Number(rounds.rounds[displayedIndex + 1])
+      : null
 
   const goTo = (round: number) => {
     setLoading(true)
@@ -59,7 +63,7 @@ export default function Round({
             <div className="flex min-w-0 flex-col items-center justify-center gap-1 sm:gap-2">
               <RoundSelect
                 rounds={rounds.rounds}
-                currentRound={rounds.currentRound}
+                currentRound={String(displayedRound)}
               />
               <small className="muted">{games.date}</small>
             </div>

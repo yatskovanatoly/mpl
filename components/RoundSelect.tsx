@@ -7,7 +7,7 @@ import { ChangeEvent, FC, RefObject, useContext, useRef } from "react"
 
 const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
   const params = useParams<{ round: string }>()
-  const initialRound = params.round ?? currentRound
+  const selectedRound = params.round ?? currentRound
   const { setLoading } = useContext(RoundContext)
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -35,7 +35,7 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
       className={`flex cursor-default items-center gap-1 text-sm max-sm:border-b`}
     >
       <div>Тур:</div>
-      <select ref={ref} defaultValue={initialRound} onChange={handleChange}>
+      <select ref={ref} value={selectedRound} onChange={handleChange}>
         {rounds.map((round, i) => (
           <option key={i + round} value={round}>
             {round}

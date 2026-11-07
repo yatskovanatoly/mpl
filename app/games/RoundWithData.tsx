@@ -21,7 +21,12 @@ const RoundWithData = async ({
       <div className={GAMES_STANDINGS_CLASS}>
         <Standings standings={standings.standings} />
       </div>
-      <Round games={games} rounds={rounds} season={season} />
+      <Round
+        games={games}
+        rounds={rounds}
+        season={season}
+        selectedRound={round ?? Number(rounds.currentRound)}
+      />
     </div>
   )
 }

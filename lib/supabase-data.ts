@@ -138,10 +138,64 @@ export const getRounds = async (season?: string): Promise<Rounds> => {
 }
 
 export const getStandings = async (season?: string): Promise<StandingsData> => {
-  const rows = await getRows<TeamStatRow>(
-    "team_stats",
-    `select=*&order=points.desc,goal_diff.desc,goals_for.desc${seasonFilter(season)}`,
-  )
+  const [rows, matches] = await Promise.all([
+    getRows<TeamStatRow>(
+      "team_stats",
+      `select=*&order=points.desc,goal_diff.desc,goals_for.desc${seasonFilter(season)}`,
+    ),
+    getMatchRows(season),
+  ])
+  const formByTeam = new Map<
+    string,
+    { round: number; time: string; form: Standing["form"][number] }[]
+  >()
+
+  const addForm = (
+    teamId: string,
+    round: number,
+    time: string,
+    result: Standing["form"][number]["result"],
+    title: string,
+  ) => {
+    const teamForm = formByTeam.get(teamId) ?? []
+    teamForm.push({ round, time, form: { result, title } })
+    formByTeam.set(teamId, teamForm)
+  }
+
+  for (const match of matches) {
+    if (match.home_goals === null || match.away_goals === null) continue
+    const score = `${match.home_goals}:${match.away_goals}`
+    const homeResult =
+      match.home_goals > match.away_goals
+        ? "win"
+        : match.home_goals < match.away_goals
+          ? "loss"
+          : "draw"
+    const awayResult =
+      homeResult === "win" ? "loss" : homeResult === "loss" ? "win" : "draw"
+    addForm(
+      match.home_id,
+      match.round,
+      match.match_date ?? match.time ?? "",
+      homeResult,
+      `Тур ${match.round}: ${score} vs ${match.away_name}`,
+    )
+    addForm(
+      match.away_id,
+      match.round,
+      match.match_date ?? match.time ?? "",
+      awayResult,
+      `Тур ${match.round}: ${match.away_goals}:${match.home_goals} vs ${match.home_name}`,
+    )
+  }
+
+  for (const teamForm of formByTeam.values()) {
+    teamForm.sort(
+      (left, right) =>
+        left.round - right.round || left.time.localeCompare(right.time),
+    )
+  }
+
   return {
     standings: rows.map(
       (row, index): Standing => ({
@@ -159,7 +213,9 @@ export const getStandings = async (season?: string): Promise<StandingsData> => {
         goalsFor: String(row.goals_for),
         goalsAgainst: String(row.goals_against),
         goalDiff: String(row.goal_diff),
-        form: [],
+        form: (formByTeam.get(row.team_id) ?? [])
+          .slice(-5)
+          .map(({ form }) => form),
       }),
     ),
   }
