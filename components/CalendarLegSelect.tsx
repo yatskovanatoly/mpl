@@ -3,16 +3,23 @@
 import NavButton from "@/components/NavButton"
 import { CalendarLeg } from "@/lib/calendar-legs"
 import RoundContext from "@/lib/round-context"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { FC, useContext } from "react"
 
-const CalendarLegSelect: FC<{ leg: CalendarLeg }> = ({ leg }) => {
+const CalendarLegSelect: FC<{ leg: CalendarLeg; season?: string }> = ({
+  leg,
+  season,
+}) => {
   const { setLoading } = useContext(RoundContext)
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const goTo = (next: CalendarLeg) => {
     setLoading(true)
-    router.push(`/calendar/${next}`)
+    const selectedSeason = season ?? searchParams.get("season")
+    router.push(
+      `/calendar/${next}${selectedSeason ? `?season=${encodeURIComponent(selectedSeason)}` : ""}`,
+    )
   }
 
   return (

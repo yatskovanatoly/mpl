@@ -35,9 +35,13 @@ const NavigationTabs = () => {
     }
 
     event.preventDefault()
-    setPendingHref(href)
+    const season = new URLSearchParams(window.location.search).get("season")
+    const destination = season
+      ? `${href}?season=${encodeURIComponent(season)}`
+      : href
+    setPendingHref(destination)
     startTransition(() => {
-      router.push(href)
+      router.push(destination)
     })
   }
 
@@ -98,7 +102,7 @@ const NavigationTabs = () => {
         aria-busy={updating ? "true" : undefined}
         disabled={updating}
         onClick={refreshData}
-        className="absolute top-0 left-full ml-2 flex size-8 items-center justify-center rounded text-[var(--foreground)] transition hover:bg-[var(--button-bg)] hover:opacity-70 disabled:cursor-wait sm:size-9 cursor-pointer"
+        className="absolute top-0 left-full ml-2 flex size-8 cursor-pointer items-center justify-center rounded text-[var(--foreground)] transition hover:bg-[var(--button-bg)] hover:opacity-70 disabled:cursor-wait sm:size-9"
       >
         <CircleArrowIcon
           className={`size-4 sm:size-5 ${updating ? "muted animate-spin" : ""}`}

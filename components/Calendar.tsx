@@ -17,7 +17,11 @@ import RoundContext from "@/lib/round-context"
 import { CalendarData } from "@/lib/types"
 import { useRef, useState } from "react"
 
-const Calendar = ({ rounds, leg }: CalendarData & { leg: CalendarLeg }) => {
+const Calendar = ({
+  rounds,
+  leg,
+  season,
+}: CalendarData & { leg: CalendarLeg; season?: string }) => {
   const [loading, setLoading] = useState(false)
   const captureRef = useRef<HTMLDivElement>(null)
   const maxGames = rounds.reduce(
@@ -31,7 +35,7 @@ const Calendar = ({ rounds, leg }: CalendarData & { leg: CalendarLeg }) => {
       <div className={CALENDAR_PAGE}>
         <div className="flex min-h-0 flex-1 flex-col overflow-hidden px-1 text-[var(--foreground)] sm:px-2 lg:px-3">
           <div className={CALENDAR_LEG_HEADER}>
-            <CalendarLegSelect leg={leg} />
+            <CalendarLegSelect leg={leg} season={season} />
           </div>
           {rounds.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 py-8 text-center text-sm">

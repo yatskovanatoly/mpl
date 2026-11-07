@@ -2,7 +2,7 @@
 
 import RoundContext from "@/lib/round-context"
 import { Rounds } from "@/lib/types"
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import { ChangeEvent, FC, RefObject, useContext, useRef } from "react"
 
 const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
@@ -10,6 +10,7 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
   const initialRound = params.round ?? currentRound
   const { setLoading } = useContext(RoundContext)
   const router = useRouter()
+  const searchParams = useSearchParams()
   const ref = useRef<HTMLSelectElement>(null)
 
   const handleChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -22,7 +23,10 @@ const RoundSelect: FC<Rounds> = ({ rounds, currentRound }) => {
     }
 
     setLoading(true)
-    router.push(`/games/${round}`)
+    const season = searchParams.get("season")
+    router.push(
+      `/games/${round}${season ? `?season=${encodeURIComponent(season)}` : ""}`,
+    )
   }
 
   return (

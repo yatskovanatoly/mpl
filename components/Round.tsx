@@ -12,9 +12,11 @@ import { useRef, useState } from "react"
 export default function Round({
   rounds,
   games,
+  season,
 }: {
   rounds: Rounds
   games: RoundData
+  season?: string
 }) {
   const [loading, setLoading] = useState(false)
   const captureRef = useRef<HTMLDivElement>(null)
@@ -28,7 +30,9 @@ export default function Round({
 
   const goTo = (round: number) => {
     setLoading(true)
-    router.push(`/games/${round}`)
+    router.push(
+      `/games/${round}${season ? `?season=${encodeURIComponent(season)}` : ""}`,
+    )
   }
 
   return (
