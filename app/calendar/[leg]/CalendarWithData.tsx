@@ -1,6 +1,6 @@
 import Calendar from "@/components/Calendar"
 import { filterRoundsByLeg, parseCalendarLeg } from "@/lib/calendar-legs"
-import { getCalendarData } from "@/lib/harvest-calendar-data"
+import { getCalendarData } from "@/lib/supabase-data"
 
 const CalendarWithData = async ({ leg }: { leg: string }) => {
   const legNum = parseCalendarLeg(leg)

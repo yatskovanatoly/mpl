@@ -1,6 +1,6 @@
 import Round from "@/components/Round"
 import Standings from "@/components/Standings"
-import getData, { getRounds, getStandings } from "@/lib/harvest-data"
+import { getData, getRounds, getStandings } from "@/lib/supabase-data"
 import { GAMES_LAYOUT_CLASS, GAMES_STANDINGS_CLASS } from "@/lib/layout-spacing"
 
 const RoundWithData = async ({ round }: { round?: number }) => {

@@ -1,5 +1,5 @@
 import Standings from "@/components/Standings"
-import { getStandings } from "@/lib/harvest-data"
+import { getStandings } from "@/lib/supabase-data"
 
 const StandingsWithData = async () => {
   const standings = await getStandings()
