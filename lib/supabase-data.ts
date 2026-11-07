@@ -32,8 +32,8 @@ type TeamStatRow = {
   points: number
 }
 
-const supabaseUrl = process.env.SUPABASE_URL
-const supabaseKey = process.env.SUPABASE_ANON_KEY
+const supabaseUrl = process.env.SUPABASE_URL?.trim().replace(/\/+$/, "")
+const supabaseKey = process.env.SUPABASE_ANON_KEY?.replace(/\s/g, "")
 
 const getRows = async <T>(table: string, query: string): Promise<T[]> => {
   if (!supabaseUrl || !supabaseKey) throw new Error("Supabase environment is not configured")
